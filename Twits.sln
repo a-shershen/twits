@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twits.WEB", "Twits.WEB\Twits.WEB.csproj", "{8609CE4B-2A3C-4D71-B51D-1B5D00E957CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twits.BLL", "Twits.BLL\Twits.BLL.csproj", "{EF0D0EBE-7769-445A-990A-6CDB1F4F4B2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twits.DAL", "Twits.DAL\Twits.DAL.csproj", "{316CBA05-B393-4291-BD4D-D681F47BD366}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8609CE4B-2A3C-4D71-B51D-1B5D00E957CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8609CE4B-2A3C-4D71-B51D-1B5D00E957CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8609CE4B-2A3C-4D71-B51D-1B5D00E957CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8609CE4B-2A3C-4D71-B51D-1B5D00E957CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF0D0EBE-7769-445A-990A-6CDB1F4F4B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF0D0EBE-7769-445A-990A-6CDB1F4F4B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF0D0EBE-7769-445A-990A-6CDB1F4F4B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF0D0EBE-7769-445A-990A-6CDB1F4F4B2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{316CBA05-B393-4291-BD4D-D681F47BD366}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{316CBA05-B393-4291-BD4D-D681F47BD366}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{316CBA05-B393-4291-BD4D-D681F47BD366}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{316CBA05-B393-4291-BD4D-D681F47BD366}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {933AAF31-CFDD-49D0-AEEC-676F98E71E8A}
+	EndGlobalSection
+EndGlobal
