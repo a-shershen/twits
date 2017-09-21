@@ -17,5 +17,7 @@ namespace Twits.DAL.Interfaces
         void Delete(Func<T, bool> predicate);
 
         IEnumerable<T> GetAll(Func<T, bool> predicate = null);
+
+        IQueryable<T> GetAllQueryable(Func<T, bool> predicate = null);
     }
 }

@@ -39,6 +39,18 @@ namespace Twits.DAL.Repos
             }
         }
 
+        public IQueryable<Role> GetAllQueryable(Func<Role, bool> predicate = null)
+        {
+            if (predicate == null)
+            {
+                return db.Roles.AsQueryable();
+            }
+            else
+            {
+                return db.Roles.Where(predicate).AsQueryable();
+            }
+        }
+
         public Role Read(Func<Role, bool> predicate)
         {
             return db.Roles.FirstOrDefault(predicate);

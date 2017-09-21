@@ -43,6 +43,18 @@ namespace Twits.DAL.Repos
             }
         }
 
+        public IQueryable<Tag> GetAllQueryable(Func<Tag, bool> predicate = null)
+        {
+            if (predicate == null)
+            {
+                return db.Tags.AsQueryable();
+            }
+            else
+            {
+                return db.Tags.Where(predicate).AsQueryable();
+            }
+        }
+
         public Tag Read(Func<Tag, bool> predicate)
         {
             return db.Tags.FirstOrDefault(predicate);

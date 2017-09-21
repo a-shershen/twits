@@ -43,6 +43,18 @@ namespace Twits.DAL.Repos
             }
         }
 
+        public IQueryable<Message> GetAllQueryable(Func<Message, bool> predicate = null)
+        {
+            if (predicate == null)
+            {
+                return db.Messages.AsQueryable();
+            }
+            else
+            {
+                return db.Messages.Where(predicate).AsQueryable();
+            }
+        }
+
         public Message Read(Func<Message, bool> predicate)
         {
             return db.Messages.FirstOrDefault(predicate);

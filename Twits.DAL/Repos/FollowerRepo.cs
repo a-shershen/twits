@@ -43,6 +43,18 @@ namespace Twits.DAL.Repos
             }
         }
 
+        public IQueryable<Follower> GetAllQueryable(Func<Follower, bool> predicate = null)
+        {
+            if (predicate == null)
+            {
+                return db.Followers.AsQueryable();
+            }
+            else
+            {
+                return db.Followers.Where(predicate).AsQueryable();
+            }
+        }
+
         public Follower Read(Func<Follower, bool> predicate)
         {
             return db.Followers.FirstOrDefault(predicate);
