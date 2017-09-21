@@ -8,7 +8,7 @@ using Twits.DAL.Models;
 
 namespace Twits.DAL.UnitOfWork
 {
-    class UnitOfWork : Interfaces.IUnitOfWork
+    public class UnitOfWork : Interfaces.IUnitOfWork
     {
         private Contexts.CustomContext db;
 
