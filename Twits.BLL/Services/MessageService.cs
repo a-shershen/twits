@@ -41,12 +41,12 @@ namespace Twits.BLL.Services
         public IEnumerable<DTOViewMessage> GetFeed(int userId)
         {
             var feedMes = db.Users.GetAllQueryable(u => u.Id == userId).Join(
-                    db.Followers.GetAllQueryable(),
+                    db.Subscriptions.GetAllQueryable(),
                     u => u.Id,
                     f => f.UserId,
                     (u, f) => new { u, f }
                     ).Join(db.Messages.GetAllQueryable(),
-                        uf => uf.f.FollowerId,
+                        uf => uf.f.ReadUserId,
                         m => m.UserId,
                         (uf, m) => new DTOModels.DTOViewMessage
                         {

@@ -29,7 +29,7 @@ namespace Twits.BLL.Services
 
         public void Follow(int userId, int followUserId)
         {
-            db.Followers.Create(new DAL.Models.Follower { FollowerId = followUserId, UserId = userId });
+            db.Subscriptions.Create(new DAL.Models.Subscription { ReadUserId = followUserId, UserId = userId });
         }
     }
 }

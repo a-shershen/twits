@@ -51,6 +51,28 @@ namespace Twits.BLL.Services
         public void RegisterNewUser(UserDTO user)
         {
             db.Users.Create(user.ToDal());
+            db.Save();
+        }
+
+        public string GetUserRole(string login)
+        {
+            return db.Users.GetAll(u => u.Login == login).Join(db.Roles.GetAll(), u => u.RoleId, r => r.Id,
+                (u, r) => r.RoleName).FirstOrDefault();
+        }
+
+        public int GetUserRoleId(string login)
+        {
+            var user = db.Users.Read(u => u.Login == login);
+
+            if(user!=null)
+            {
+                return user.RoleId;
+            }
+            else
+            {
+                return -1;
+            }
+
         }
     }
 }

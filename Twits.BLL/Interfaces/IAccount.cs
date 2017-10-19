@@ -13,5 +13,9 @@ namespace Twits.BLL.Interfaces
         bool IsPasswordTrue(string login, string password);
 
         bool IsUserInRole(string login, string roleName);
+
+        string GetUserRole(string login);
+
+        int GetUserRoleId(string login);
     }
 }
