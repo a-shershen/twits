@@ -8,7 +8,7 @@ namespace Twits.DAL.Interfaces
 {
     public interface IUnitOfWork:IDisposable
     {
-        IGenericRepo<Models.Follower> Followers { get; }
+        IGenericRepo<Models.Subscription> Subscriptions { get; }
         IGenericRepo<Models.Message> Messages { get; }
         IGenericRepo<Models.Role> Roles { get; }
         IGenericRepo<Models.Tag> Tags { get; }

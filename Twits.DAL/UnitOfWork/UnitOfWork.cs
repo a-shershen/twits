@@ -12,7 +12,7 @@ namespace Twits.DAL.UnitOfWork
     {
         private Contexts.CustomContext db;
 
-        private IGenericRepo<Models.Follower> followersRepo;
+        private IGenericRepo<Models.Subscription> subscriptionsRepo;
         private IGenericRepo<Models.Message> messagesRepo;
         private IGenericRepo<Models.Role> rolesRepo;
         private IGenericRepo<Models.Tag> tagsRepo;
@@ -25,14 +25,14 @@ namespace Twits.DAL.UnitOfWork
 
         
 
-        public IGenericRepo<Follower> Followers
+        public IGenericRepo<Subscription> Subscriptions
         {
             get
             {
-                if (followersRepo == null)
-                    followersRepo = new Repos.FollowerRepo(db);
+                if (subscriptionsRepo == null)
+                    subscriptionsRepo = new Repos.SubscriptionRepo(db);
 
-                return followersRepo;
+                return subscriptionsRepo;
             }
         }
 

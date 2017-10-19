@@ -12,10 +12,11 @@ namespace Twits.DAL.Contexts
     {
         public CustomContext(string connectionString) : base(connectionString)
         {
-            OnModelCreating(new DbModelBuilder());
+            //OnModelCreating(new DbModelBuilder());
+            Database.SetInitializer<CustomContext>(new DBInitializer());
         }
 
-        public DbSet<Models.Follower> Followers { get; set; }
+        public DbSet<Models.Subscription> Subscriptions { get; set; }
         public DbSet<Models.Message> Messages { get; set; }
         public DbSet<Models.Role> Roles { get; set; }
         public DbSet<Models.Tag> Tags { get; set; }
@@ -23,8 +24,19 @@ namespace Twits.DAL.Contexts
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-        }
+            modelBuilder.Entity<Models.Subscription>()
+                .HasRequired(s => s.User)
+                .WithMany(u => u.SubscriptionsUsers)
+                .HasForeignKey(s => s.UserId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Models.Subscription>()
+                .HasRequired(s => s.ReadUser)
+                .WithMany(u => u.SubscriptionsReadUsers)
+                .HasForeignKey(s => s.ReadUserId)
+                .WillCascadeOnDelete(false);
+                
+        }        
     }
 
     class DBInitializer:DropCreateDatabaseIfModelChanges<CustomContext>

@@ -12,6 +12,11 @@ namespace Twits.DAL.Models
         public User()
         {
             Messages = new List<Models.Message>();
+
+            SubscriptionsUsers = new List<Models.Subscription>();
+
+
+            SubscriptionsReadUsers = new List<Models.Subscription>();
         }
 
         public int Id { get; set; }
@@ -26,5 +31,9 @@ namespace Twits.DAL.Models
         public virtual Role Role { get; set; }
 
         public virtual ICollection<Models.Message> Messages { get; set; }
+
+        public virtual ICollection<Models.Subscription> SubscriptionsUsers { get; set; }
+
+        public virtual ICollection<Models.Subscription> SubscriptionsReadUsers { get; set; }
     }
 }
