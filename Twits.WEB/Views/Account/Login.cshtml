@@ -1,0 +1,23 @@
+﻿@model Twits.WEB.Models.LoginModel
+
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/_MainLayout.cshtml";
+}
+
+<h2>Login</h2>
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post))
+{
+    @Html.LabelFor(m=>m.Login, "Логин:")
+    @Html.TextBoxFor(m=>m.Login)
+
+    <br />
+
+    @Html.LabelFor(m=>m.Password, "Пароль")
+    @Html.PasswordFor(m=>m.Password)
+
+    <br />
+
+    <input type="submit" />
+}
