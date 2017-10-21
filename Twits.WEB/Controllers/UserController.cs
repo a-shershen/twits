@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace Twits.WEB.Controllers
 {
+    [Authorize(Roles ="user")]
     public class UserController : Controller
     {
         // GET: User
@@ -17,6 +18,18 @@ namespace Twits.WEB.Controllers
         public ActionResult UserInfo(string user)
         {
             return View();
+        }
+
+        [HttpGet]
+        public PartialViewResult AddNewMessage()
+        {
+            return PartialView();
+        }
+
+        [HttpPost]
+        public PartialViewResult AddNewMessage(Models.NewMessage model)
+        {
+            return null;
         }
     }
 }

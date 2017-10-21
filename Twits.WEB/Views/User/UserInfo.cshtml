@@ -8,7 +8,17 @@
 
 <menu>
     <menuitem>
-        Твиты
+        @Ajax.ActionLink("Новое сообщение", "AddNewMessage", new AjaxOptions
+   {
+       HttpMethod= "GET",
+       UpdateTargetId = "showContent",
+       InsertionMode = InsertionMode.Replace
+   }
+       )
+    </menuitem>
+
+    <menuitem>
+        Сообщения
     </menuitem>
 
     <menuitem>

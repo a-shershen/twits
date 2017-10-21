@@ -29,6 +29,8 @@ namespace Twits.WEB.Controllers
             {
                 if (accountService.IsPasswordTrue(model.Login, Hash.Hash.GetHash(model.Password)))
                 {
+                    System.Web.Security.FormsAuthentication.SetAuthCookie(model.Login, true);
+
                     return RedirectToAction("UserInfo", "User", new { user = model.Login });
                 }
                 else
@@ -58,7 +60,7 @@ namespace Twits.WEB.Controllers
                 {
                     Login = model.Login,
                     Password = Hash.Hash.GetHash(model.Password),
-                    RoleId = accountService.GetUserRoleId(model.Login)
+                    RoleId = accountService.GetRoleIdByName("user")
                 });
 
                 return RedirectToAction("UserInfo", "User", new { user = model.Login }); 

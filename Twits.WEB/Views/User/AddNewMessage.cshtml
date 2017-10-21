@@ -1,0 +1,17 @@
+﻿@model Twits.WEB.Models.NewMessage
+
+@using (@Ajax.BeginForm(
+    "NewMessage", "User", 
+    new AjaxOptions {
+    HttpMethod = "Post",
+    InsertionMode = InsertionMode.Replace,
+    UpdateTargetId = "showContent"
+}))
+{
+    @Html.LabelFor(m=>m.Text, "Текст сообщения:")
+    @Html.TextAreaFor(m=>m.Text)
+
+    <br />
+
+    <input type="submit" />
+}
