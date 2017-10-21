@@ -17,5 +17,7 @@ namespace Twits.BLL.Interfaces
         string GetUserRole(string login);
 
         int GetUserRoleId(string login);
+
+        int GetRoleIdByName(string roleName);
     }
 }
