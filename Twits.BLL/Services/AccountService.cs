@@ -74,5 +74,20 @@ namespace Twits.BLL.Services
             }
 
         }
+
+        public int GetRoleIdByName(string roleName)
+        {
+            var role = db.Roles.Read(r => r.RoleName == roleName);
+
+            if(role!=null)
+            {
+                return role.Id;
+            }
+            
+            else
+            {
+                return -1;
+            }
+        }
     }
 }
