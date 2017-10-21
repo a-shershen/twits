@@ -13,7 +13,7 @@ namespace Twits.DAL.Repos
 
         public RolesRepo(Contexts.CustomContext db)
         {
-            throw new NotImplementedException();
+            this.db = db;
         }
 
         public void Create(Role item)
