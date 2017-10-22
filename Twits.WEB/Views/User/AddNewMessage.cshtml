@@ -1,7 +1,7 @@
 ﻿@model Twits.WEB.Models.NewMessage
 
 @using (@Ajax.BeginForm(
-    "NewMessage", "User", 
+    "AddNewMessage", "User", 
     new AjaxOptions {
     HttpMethod = "Post",
     InsertionMode = InsertionMode.Replace,

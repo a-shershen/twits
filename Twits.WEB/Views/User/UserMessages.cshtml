@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Twits.WEB.Models.UserMessage>
+
+@{ 
+    foreach(var mes in Model)
+    {
+        @mes.DateTime
+            
+        <br />
+
+        @mes.Text
+
+        <br /><br />
+    }
+}

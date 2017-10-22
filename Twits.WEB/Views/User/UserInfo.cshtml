@@ -18,7 +18,13 @@
     </menuitem>
 
     <menuitem>
-        Сообщения
+        @Ajax.ActionLink("Мои сообщения", "UserMessages", new AjaxOptions
+   {
+       HttpMethod = "GET",
+       UpdateTargetId = "showContent",
+       InsertionMode = InsertionMode.Replace
+   }
+       )
     </menuitem>
 
     <menuitem>
