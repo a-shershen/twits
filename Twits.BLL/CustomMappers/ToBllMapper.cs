@@ -14,7 +14,8 @@ namespace Twits.BLL.CustomMappers
             {
                 Id = mes.Id,
                 DateTime = mes.DateTime,
-                UserId = mes.UserId
+                UserId = mes.UserId,
+                Text = mes.Text
             };
         }
 

@@ -11,5 +11,7 @@ namespace Twits.BLL.Interfaces
         void AddNewMessage(DTOModels.DTOMessage message);
 
         void Follow(int userId, int followUserId);
+
+        int GetUserIdByName(string userName);
     }
 }

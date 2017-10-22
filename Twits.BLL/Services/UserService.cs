@@ -25,11 +25,27 @@ namespace Twits.BLL.Services
             }
 
             db.Messages.Create(message.ToDal());
+
+            db.Save();
         }
 
         public void Follow(int userId, int followUserId)
         {
             db.Subscriptions.Create(new DAL.Models.Subscription { ReadUserId = followUserId, UserId = userId });
+        }
+
+        public int GetUserIdByName(string userName)
+        {
+            var user = db.Users.Read(u => u.Login == userName);
+
+            if(user!=null)
+            {
+                return user.Id;
+            }
+            else
+            {
+                return -1;
+            }
         }
     }
 }
