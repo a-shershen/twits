@@ -137,6 +137,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MessageController.cs" />
+    <Compile Include="Controllers\SubscriptionController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CustomMappers\ToWebMapper.cs" />
     <Compile Include="Global.asax.cs">
@@ -156,12 +158,15 @@
     <Content Include="Views\_MainLayout.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Home\AccountTopPanel.cshtml" />
-    <Content Include="Views\Home\UserTopPanel.cshtml" />
     <Content Include="Views\User\UserInfo.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\User\AddNewMessage.cshtml" />
     <Content Include="Views\User\UserMessages.cshtml" />
+    <Content Include="Views\Message\LastMessages.cshtml" />
+    <Content Include="Views\Subscription\GetSubscriptions.cshtml" />
+    <Content Include="Views\Subscription\GetSubscribers.cshtml" />
+    <Content Include="Views\Message\GetFeed.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

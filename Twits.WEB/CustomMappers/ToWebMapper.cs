@@ -12,7 +12,9 @@ namespace Twits.WEB.CustomMappers
             return new Models.UserMessage
             {
                 DateTime = dtoMessage.DateTime,
-                Text = dtoMessage.Text
+                Text = dtoMessage.Text,
+                Id = dtoMessage.Id,
+                Login = dtoMessage.Login
             };
         }
 

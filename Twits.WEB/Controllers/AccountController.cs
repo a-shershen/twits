@@ -71,7 +71,11 @@ namespace Twits.WEB.Controllers
             }
         }
 
-
+        public ActionResult Logout()
+        {
+            System.Web.Security.FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
+        }
 
     }
 }

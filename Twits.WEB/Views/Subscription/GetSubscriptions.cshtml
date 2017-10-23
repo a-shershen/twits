@@ -1,0 +1,24 @@
+﻿@model IEnumerable<string>
+
+@if(Model == null)
+{
+    
+    @:Нет подписок
+}
+
+else
+{
+    if (Model.Count() == 0)
+    {
+        @:Нет подписок
+    }
+
+    else
+    {
+        foreach (var str in Model)
+        {
+            @Html.ActionLink(@str, "UserInfo", "User", new { user = @str }, null)
+            <br />
+        }
+    }
+}

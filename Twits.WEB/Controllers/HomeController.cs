@@ -17,14 +17,7 @@ namespace Twits.WEB.Controllers
         [ChildActionOnly]
         public ActionResult TopPanel()
         {
-            if(Request.IsAuthenticated)
-            {
-                return PartialView("UserTopPanel", User.Identity.Name);
-            }
-            else
-            {
-                return PartialView("AccountTopPanel");
-            }
+            return PartialView("AccountTopPanel");
         }
     }
 }

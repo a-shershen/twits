@@ -6,19 +6,43 @@
 
 <h2>UserInfo</h2>
 
+<div>
+    @{ 
+        string userName = ViewBag.UserName as string;
+        @Html.ActionLink(userName, "UserInfo", "User", new { user = userName }, null)
+        }
+</div>
+
+@if(ViewBag.IsSubscribed != null)
+{
+    if(!ViewBag.IsSubscribed)
+    {
+        @Html.ActionLink("Подписаться", "Subscribe", "Subscription", new { subscription = userName }, null)
+    }
+    else
+    {
+        @Html.ActionLink("Отписаться", "Unsubscribe", "Subscription", new { subscription = userName }, null)
+    }
+}
+
 <menu>
+
+    @if (User != null && User.Identity.IsAuthenticated && !ViewBag.NotMyPage)
+    {
+
     <menuitem>
         @Ajax.ActionLink("Новое сообщение", "AddNewMessage", new AjaxOptions
    {
-       HttpMethod= "GET",
+       HttpMethod = "GET",
        UpdateTargetId = "showContent",
        InsertionMode = InsertionMode.Replace
    }
-       )
+            )
     </menuitem>
+    }
 
     <menuitem>
-        @Ajax.ActionLink("Мои сообщения", "UserMessages", new AjaxOptions
+        @Ajax.ActionLink("Сообщения", "UserMessages", new { user = userName }, new AjaxOptions
    {
        HttpMethod = "GET",
        UpdateTargetId = "showContent",
@@ -28,15 +52,33 @@
     </menuitem>
 
     <menuitem>
-        Лента
+        @Ajax.ActionLink("Лента", "GetFeed", "Message", new { user = userName }, new AjaxOptions
+   {
+       HttpMethod = "GET",
+       UpdateTargetId = "showContent",
+       InsertionMode = InsertionMode.Replace
+   }
+       )
     </menuitem>
 
     <menuitem>
-        Подписки
+        @Ajax.ActionLink("Подписки", "GetSubscriptions", "Subscription", new { user = userName }, new AjaxOptions
+   {
+       HttpMethod = "GET",
+       UpdateTargetId = "showContent",
+       InsertionMode = InsertionMode.Replace
+   }
+       )
     </menuitem>
 
     <menuitem>
-        Подписчики
+        @Ajax.ActionLink("Подписчики", "GetSubscribers", "Subscription", new { user = userName }, new AjaxOptions
+   {
+       HttpMethod = "GET",
+       UpdateTargetId = "showContent",
+       InsertionMode = InsertionMode.Replace
+   }
+       )
     </menuitem>
 </menu>
 

@@ -4,11 +4,20 @@
     Layout = "~/Views/_MainLayout.cshtml";
 }
 
+
+
 <h2>Index</h2>
 
 <menu>
     <menuitem>
-        Последние твиты
+        @Ajax.ActionLink("Последние сообщения", "LastMessages", "Message",
+       new AjaxOptions
+       {
+           HttpMethod = "get",
+           InsertionMode = InsertionMode.Replace,
+           UpdateTargetId = "showContent"
+       })
+
     </menuitem>
 
 </menu>

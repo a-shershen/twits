@@ -1,2 +1,16 @@
-﻿Войди или зарегистрируйся!
-@Html.ActionLink("Зарегистрируйся!", "Register", "Account")
+﻿@Html.ActionLink("TWITS!", "Index", "Home")
+
+@if (@User.Identity.IsAuthenticated)
+{
+    
+
+    @Html.ActionLink(@User.Identity.Name, "UserInfo", "User")
+
+    @Html.ActionLink("Выйти!", "Logout", "Account")
+}
+else
+{
+    @: Войди или зарегистрируйся!
+    @Html.ActionLink("Войти!", "Login", "Account")
+    @Html.ActionLink("Зарегистрируйся!", "Register", "Account")
+}

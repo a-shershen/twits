@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Twits.WEB.Models.UserMessage>
+
+@foreach(var mes in Model)
+{
+    @Html.ActionLink(@mes.Login, "UserInfo", "User", new { user = @mes.Login }, null)
+    
+    <br />
+
+    @mes.DateTime
+
+    <br />
+
+    @mes.Text
+
+    <br/>
+    <br/>
+}

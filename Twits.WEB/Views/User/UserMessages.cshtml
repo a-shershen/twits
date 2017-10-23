@@ -1,14 +1,22 @@
 ﻿@model IEnumerable<Twits.WEB.Models.UserMessage>
 
-@{ 
+
+
+@if(Model != null && Model.Count() != 0)
+{ 
     foreach(var mes in Model)
     {
-        @mes.DateTime
+            @mes.DateTime
             
-        <br />
+            <br />
 
-        @mes.Text
+            @mes.Text
 
-        <br /><br />
+            <br /><br />
+
     }
+}
+else
+{
+    @: Сообщений нет
 }

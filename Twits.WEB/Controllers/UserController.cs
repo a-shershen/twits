@@ -25,9 +25,48 @@ namespace Twits.WEB.Controllers
             return View();
         }
 
-        public ActionResult UserInfo(string user)
+        [AllowAnonymous]
+        public ActionResult UserInfo(string user = null)
         {
-            return View();
+            if(user == null)
+            {
+                if(User!=null && User.Identity.IsAuthenticated)
+                {
+                    ViewBag.NotMyPage = false;
+                    ViewBag.UserName = User.Identity.Name;
+
+                    return View();
+                }
+
+                else
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+
+            else
+            {
+                if(User!=null && User.Identity.Name==user)
+                {
+                    ViewBag.NotMyPage = false;
+                    ViewBag.UserName = User.Identity.Name;
+
+                    return View();
+                }
+
+                else
+                {
+                    ViewBag.NotMyPage = true;
+                    ViewBag.UserName = user;
+
+                    if (User.Identity.IsAuthenticated)
+                    {
+                        ViewBag.IsSubscribed = userService.IsSubscribed(User.Identity.Name, user);
+                    }
+
+                    return View();
+                }
+            }
         }
 
         [HttpGet]
@@ -62,9 +101,25 @@ namespace Twits.WEB.Controllers
             return RedirectToAction("UserMessages");
         }
 
-        public ActionResult UserMessages()
+        [AllowAnonymous]
+        public ActionResult UserMessages(string user = null)
         {
-            return PartialView(messageService.GetAllUserMessages(userService.GetUserIdByName(User.Identity.Name)).ToWeb());
+            if (user == null)
+            {
+                if (User != null && User.Identity.IsAuthenticated)
+                {
+
+                    return PartialView(messageService.GetAllUserMessages(userService.GetUserIdByName(User.Identity.Name)).ToWeb());
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            else
+            {
+                return PartialView(messageService.GetAllUserMessages(userService.GetUserIdByName(user)).ToWeb());
+            }
         }
     }
 }
