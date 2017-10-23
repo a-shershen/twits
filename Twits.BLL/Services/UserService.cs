@@ -34,6 +34,28 @@ namespace Twits.BLL.Services
             db.Subscriptions.Create(new DAL.Models.Subscription { ReadUserId = followUserId, UserId = userId });
         }
 
+        public IEnumerable<string> GetSubscribers(string user)
+        {
+            var subscribers = db.Users.GetAll(u => u.Login == user).Join(db.Subscriptions.GetAll(), u => u.Id,
+                s => s.ReadUserId,
+                (u, s) => s.UserId)
+                .Join(db.Users.GetAll(), o => o, i => i.Id, (o, i) => i.Login);
+
+            return subscribers;
+        }
+
+        public IEnumerable<string> GetSubscriptions(string user)
+        {
+            var subscriptions = db.Users.GetAll(u => u.Login == user).Join(db.Subscriptions.GetAll(), u => u.Id,
+                s => s.UserId,
+                (u, s) => s.ReadUserId)
+                .Join(db.Users.GetAll(), o => o, i => i.Id, (o, i) => i.Login);
+
+            return subscriptions;
+
+
+        }
+
         public int GetUserIdByName(string userName)
         {
             var user = db.Users.Read(u => u.Login == userName);
@@ -45,6 +67,69 @@ namespace Twits.BLL.Services
             else
             {
                 return -1;
+            }
+        }
+
+        public bool IsSubscribed(string user, string subscribed)
+        {
+            try
+            {
+                int userId = db.Users.Read(u => u.Login == user).Id;
+
+                int subscrId = db.Users.Read(u => u.Login == subscribed).Id;
+
+                var sub = db.Subscriptions.Read(s => s.UserId == userId && s.ReadUserId == subscrId);
+
+                if(sub != null)
+                {
+                    return true;
+                }
+
+                else
+                {
+                    return false;
+                }
+            }
+
+            catch
+            {
+                return false;
+            }
+        }
+
+        public void Subscribe(string user, string subscription)
+        {
+            try
+            {
+                int userId = db.Users.Read(u => u.Login == user).Id;
+
+                int subId = db.Users.Read(u => u.Login == subscription).Id;
+
+                db.Subscriptions.Create(new DAL.Models.Subscription { UserId = userId, ReadUserId = subId });
+                db.Save();
+            }
+            catch
+            {
+                
+            }
+        }
+
+        public void Unsubscribe(string user, string subscription)
+        {
+            try
+            {
+                int userId = db.Users.Read(u => u.Login == user).Id;
+
+                int subId = db.Users.Read(u => u.Login == subscription).Id;
+
+                db.Subscriptions.Delete(s => s.UserId == userId && s.ReadUserId == subId);
+
+                db.Save();
+            }
+            
+            catch
+            {
+
             }
         }
     }

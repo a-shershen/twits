@@ -13,5 +13,15 @@ namespace Twits.BLL.Interfaces
         void Follow(int userId, int followUserId);
 
         int GetUserIdByName(string userName);
+
+        IEnumerable<string> GetSubscriptions(string user);
+
+        IEnumerable<string> GetSubscribers(string user);
+
+        bool IsSubscribed(string user, string subscribed);
+
+        void Subscribe(string user, string subscription);
+
+        void Unsubscribe(string user, string subscription);
     }
 }

@@ -15,5 +15,7 @@ namespace Twits.BLL.Interfaces
         IEnumerable<DTOModels.DTOViewMessage> GetAllUserMessages(int userId);
 
         IEnumerable<DTOModels.DTOViewMessage> GetFeed(int userId);
+
+        IEnumerable<DTOModels.DTOViewMessage> GetLastMessages(int count);
     }
 }
