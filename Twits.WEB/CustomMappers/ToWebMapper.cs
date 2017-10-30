@@ -14,7 +14,8 @@ namespace Twits.WEB.CustomMappers
                 DateTime = dtoMessage.DateTime,
                 Text = dtoMessage.Text,
                 Id = dtoMessage.Id,
-                Login = dtoMessage.Login
+                Login = dtoMessage.Login,
+                RepostCount = dtoMessage.RepostCount
             };
         }
 

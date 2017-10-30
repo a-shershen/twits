@@ -80,12 +80,9 @@ namespace Twits.WEB.Controllers
         {
             List<string> tags = new List<string>();
 
-            foreach(var word in model.Text.Split(' '))
+            foreach(var tag in System.Text.RegularExpressions.Regex.Matches(model.Text, @"#\w+"))
             {
-                if(word.Contains('#'))
-                {
-                    tags.Add(System.Text.RegularExpressions.Regex.Replace(word, @"^\#\w+$", ""));
-                }
+                tags.Add(tag.ToString());
             }
 
             BLL.DTOModels.DTOMessage message = new BLL.DTOModels.DTOMessage
@@ -93,12 +90,59 @@ namespace Twits.WEB.Controllers
                 DateTime = DateTime.Now,
                 Tags = tags,
                 Text = model.Text,
-                UserId = userService.GetUserIdByName(User.Identity.Name)
+                UserId = userService.GetUserIdByName(User.Identity.Name)                
             };
 
             userService.AddNewMessage(message);
 
             return RedirectToAction("UserMessages");
+        }
+
+        public ActionResult MakeRepost(string username, int id)
+        {
+            if (User.Identity.Name != username)
+            {
+                if(userService.IsRepostAlreadyMade(User.Identity.Name, id))
+                {
+                    if(Request.IsAjaxRequest())
+                    {
+                        Request.Abort();
+                    }
+
+                    return null;
+                }
+
+                var message = messageService.GetMessageById(id);
+
+                List<string> tags = new List<string>();
+
+                foreach (var tag in System.Text.RegularExpressions.Regex.Matches(message.Text, @"#\w+"))
+                {
+                    tags.Add(tag.ToString());
+                }
+
+                userService.AddNewMessage(
+                    new BLL.DTOModels.DTOMessage
+                    {
+                        Text = message.Text,
+                        Tags = tags,
+                        DateTime = DateTime.Now,
+                        UserId = userService.GetUserIdByName(User.Identity.Name),
+                        OriginalMessageId = message.Id
+                    });
+
+                return RedirectToAction("UserMessages");
+            }
+
+            else
+            {
+                if (Request.IsAjaxRequest())
+                {
+                    Request.Abort();
+                }
+
+                return null;
+            }
         }
 
         [AllowAnonymous]
@@ -108,8 +152,33 @@ namespace Twits.WEB.Controllers
             {
                 if (User != null && User.Identity.IsAuthenticated)
                 {
+                    var dtoMessages = messageService.GetAllUserMessages(userService.GetUserIdByName(User.Identity.Name));
 
-                    return PartialView(messageService.GetAllUserMessages(userService.GetUserIdByName(User.Identity.Name)).ToWeb());
+                    List<Twits.WEB.Models.UserMessage> messages = new List<Models.UserMessage>();
+
+                    foreach(var mes in dtoMessages)
+                    {
+                        mes.RepostCount = messageService.GetRepostCount(mes.Id);
+
+                        Models.UserMessage message = mes.ToWeb();
+
+                        if(mes.OriginalMessageId !=null)
+                        {                            
+                            var originalMessage = messageService.GetMessageById(mes.OriginalMessageId??0);
+
+                            message.OriginalMessage = new Models.UserMessage
+                            {
+                                Id = originalMessage.Id,
+                                DateTime = originalMessage.DateTime,
+                                Login = originalMessage.Login,
+                                Text = originalMessage.Text                                
+                            };
+                        }
+
+                        messages.Add(message);
+                    }
+
+                    return PartialView(messages.OrderByDescending(m=>m.DateTime));
                 }
                 else
                 {
@@ -118,8 +187,45 @@ namespace Twits.WEB.Controllers
             }
             else
             {
-                return PartialView(messageService.GetAllUserMessages(userService.GetUserIdByName(user)).ToWeb());
+                if (User != null && User.Identity.IsAuthenticated && User.Identity.Name == user)
+                {
+                    ViewBag.IsItMe = true;
+                }
+
+                var dtoMessages = messageService.GetAllUserMessages(userService.GetUserIdByName(user));
+
+                List<Twits.WEB.Models.UserMessage> messages = new List<Models.UserMessage>();
+
+                foreach (var mes in dtoMessages)
+                {
+                    mes.RepostCount = messageService.GetRepostCount(mes.Id);
+
+                    Models.UserMessage message = mes.ToWeb();
+
+                    if (mes.OriginalMessageId != null)
+                    {
+                        var originalMessage = messageService.GetMessageById(mes.OriginalMessageId ?? 0);
+
+                        message.OriginalMessage = new Models.UserMessage
+                        {
+                            Id = originalMessage.Id,
+                            DateTime = originalMessage.DateTime,
+                            Login = userService.GetUserNameById(originalMessage.UserId),
+                            Text = originalMessage.Text
+                        };
+                    }
+
+                    messages.Add(message);
+                }
+
+                return PartialView(messages.OrderByDescending(m=>m.DateTime));
             }
+        }
+
+        [HttpGet]
+        public ActionResult Edit()
+        {
+            return View();
         }
     }
 }

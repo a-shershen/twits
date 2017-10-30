@@ -11,5 +11,9 @@ namespace Twits.WEB.Models
         public string Login { get; set; }
         public string Text { get; set; }
         public DateTime DateTime { get; set; }
+
+        public UserMessage OriginalMessage { get; set; }
+
+        public int RepostCount { get; set; }
     }
 }

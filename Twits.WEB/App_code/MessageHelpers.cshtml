@@ -1,0 +1,145 @@
+﻿
+@helper PrintMessage(Twits.WEB.Models.UserMessage mes, bool isItMe = false)
+    {
+
+bool manage = false;
+
+if(User!=null && User.Identity.IsAuthenticated)
+{
+        manage = true;
+}
+
+if (mes.OriginalMessage == null)
+{
+    var tags = System.Text.RegularExpressions.Regex.Matches(mes.Text, @"#\w+");
+
+    var words = System.Text.RegularExpressions.Regex.Split(mes.Text, @"#\w+");
+
+    List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
+
+    int n;
+
+    foreach (var t in tags)
+    {
+        n = mes.Text.IndexOf(t.ToString());
+
+        xList.Add(new Tuple<int, string>(n, t.ToString()));
+    }
+
+    foreach (var w in words)
+    {
+        n = mes.Text.IndexOf(w);
+        xList.Add(new Tuple<int, string>(n, w));
+    }
+
+    xList.RemoveAll(t => t.Item2 == "");
+
+    xList = xList.OrderBy(x => x.Item1).ToList();
+
+    <div class="messageDiv">
+        @if (mes.Login != null)
+        {
+        <div>
+            <a href="~/User/UserInfo?user=@mes.Login">
+                @mes.Login
+            </a>
+        </div>
+        }
+
+        <div>
+            @mes.DateTime
+        </div>
+
+        <div class="">
+            @foreach (var item in xList)
+        {
+            if (item.Item2.First() == '#')
+            {<span class="hashtag" onclick="searchByTag('@item.Item2');">@item.Item2</span>}
+                else
+                {@item.Item2}
+            }
+        </div>
+
+        <div>
+            Репосты: @mes.RepostCount
+
+            @if (manage)
+            {
+                <span class="link" onclick="makeRepost('@mes.Login', @mes.Id);">Сделать репост</span>
+            }
+        </div>        
+
+        @if(isItMe)
+        {
+            <div>
+                <span class="link" onclick="deleteMessage(@mes.Id);">Удалить</span>
+            </div>
+        }
+
+    </div>
+}
+
+else
+{
+        <div>
+            <a href="/User/UserInfo?user=@mes.Login">
+                @mes.Login
+            </a>
+            ретвитнул 
+            <a href="/User/UserInfo?user=@mes.OriginalMessage.Login">
+                @mes.OriginalMessage.Login
+            </a>
+            @mes.DateTime
+        </div>
+    var tags = System.Text.RegularExpressions.Regex.Matches(mes.OriginalMessage.Text, @"#\w+");
+
+    var words = System.Text.RegularExpressions.Regex.Split(mes.OriginalMessage.Text, @"#\w+");
+
+List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
+
+int n;
+
+    foreach (var t in tags)
+    {
+        n = mes.OriginalMessage.Text.IndexOf(t.ToString());
+
+        xList.Add(new Tuple<int, string>(n, t.ToString()));
+    }
+
+    foreach (var w in words)
+    {
+        n = mes.OriginalMessage.Text.IndexOf(w);
+        xList.Add(new Tuple<int, string>(n, w));
+    }
+
+    xList.RemoveAll(t => t.Item2 == "");
+
+    xList = xList.OrderBy(x => x.Item1).ToList();
+
+        <div class="messageDiv">
+            <div>
+                @mes.OriginalMessage.DateTime
+            </div>
+
+            <div class="">
+                @foreach (var item in xList)
+{
+    if (item.Item2.First() == '#')
+    {<span class="hashtag" onclick="searchByTag('@item.Item2');">@item.Item2</span>}
+                    else
+                    {@item.Item2}
+                }
+            </div>
+
+            <div>
+                Репосты: @mes.RepostCount
+
+                @if (manage)
+                {
+                    <span class="link" onclick="makeRepost('@mes.Login', @mes.OriginalMessage.Id);">Сделать репост</span>
+                }
+            </div>
+        </div>
+}
+    <br />
+}

@@ -2,18 +2,18 @@
 
 
 
-@if(Model != null && Model.Count() != 0)
-{ 
-    foreach(var mes in Model)
+@if (Model != null && Model.Count() != 0)
+{
+    foreach (var mes in Model)
     {
-            @mes.DateTime
-            
-            <br />
-
-            @mes.Text
-
-            <br /><br />
-
+        if (ViewBag.IsItMe != null && ViewBag.IsItMe == true)
+        {
+            @MessageHelpers.PrintMessage(mes, true)
+        }
+        else
+        {
+            @MessageHelpers.PrintMessage(mes)
+        }
     }
 }
 else

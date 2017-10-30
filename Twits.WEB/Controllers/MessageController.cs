@@ -22,12 +22,52 @@ namespace Twits.WEB.Controllers
         // GET: Message
         public PartialViewResult LastMessages()
         {
-            return PartialView(messageService.GetLastMessages(10).ToWeb());
+            var dtoMessages = messageService.GetLastMessages(10);
+
+            List<Models.UserMessage> messages = new List<Models.UserMessage>();
+
+            foreach(var dtoMes in dtoMessages)
+            {
+                dtoMes.RepostCount = messageService.GetRepostCount(dtoMes.Id);
+
+                var mes = dtoMes.ToWeb();
+
+                if (dtoMes.OriginalMessageId != null)
+                {
+                    var orMes = messageService.GetMessageById(dtoMes.OriginalMessageId ?? 0);
+
+                    orMes.Login = userService.GetUserNameById(orMes.UserId);
+
+                    mes.OriginalMessage = orMes.ToWeb();
+                }
+
+                messages.Add(mes);                
+            }
+
+            return PartialView(messages);
         }
 
         public PartialViewResult GetFeed(string user)
         {
-            return PartialView(messageService.GetFeed(userService.GetUserIdByName(user)).ToWeb());
+            var dtoMessages = messageService.GetFeed(userService.GetUserIdByName(user));
+
+            List<Models.UserMessage> messages = new List<Models.UserMessage>();
+
+            foreach (var dtoMes in dtoMessages)
+            {
+                var mes = dtoMes.ToWeb();
+
+                if (dtoMes.OriginalMessageId != null)
+                {
+                    var orMes = messageService.GetMessageById(dtoMes.OriginalMessageId ?? 0);
+
+                    mes.OriginalMessage = orMes.ToWeb();
+                }
+
+                messages.Add(mes);
+            }
+
+            return PartialView(messages);
         }
     }
 }
