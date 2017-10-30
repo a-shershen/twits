@@ -14,6 +14,8 @@ namespace Twits.BLL.Interfaces
 
         int GetUserIdByName(string userName);
 
+        string GetUserNameById(int id);
+
         IEnumerable<string> GetSubscriptions(string user);
 
         IEnumerable<string> GetSubscribers(string user);
@@ -23,5 +25,7 @@ namespace Twits.BLL.Interfaces
         void Subscribe(string user, string subscription);
 
         void Unsubscribe(string user, string subscription);
+
+        bool IsRepostAlreadyMade(string user, int messageId);
     }
 }

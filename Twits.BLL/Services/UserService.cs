@@ -70,6 +70,46 @@ namespace Twits.BLL.Services
             }
         }
 
+        public string GetUserNameById(int id)
+        {
+            var user = db.Users.Read(u => u.Id == id);
+
+            if(user!=null)
+            {
+                return user.Login;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public bool IsRepostAlreadyMade(string user, int messageId)
+        {
+            try
+            {
+                var userId = db.Users.Read(u => u.Login == user).Id;
+                var message = db.Messages.Read(m => m.OriginalMessageId == messageId && m.UserId == userId);
+
+                //message is null when repostMessage doesn't exist
+                if (message == null)
+                {
+                    return false;
+                }
+
+                else
+                {
+                    return true;
+                }
+            }
+
+
+            catch
+            {
+                return false;
+            }
+        }
+
         public bool IsSubscribed(string user, string subscribed)
         {
             try

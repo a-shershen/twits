@@ -10,6 +10,8 @@ namespace Twits.BLL.DTOModels
     {
         public int Id { get; set; }
 
+        public int? OriginalMessageId { get; set; }
+
         public int UserId { get; set; }
 
         public DateTime DateTime { get; set; }

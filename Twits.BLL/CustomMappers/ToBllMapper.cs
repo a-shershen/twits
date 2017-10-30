@@ -13,6 +13,7 @@ namespace Twits.BLL.CustomMappers
             return new DTOModels.DTOViewMessage
             {
                 Id = mes.Id,
+                OriginalMessageId = mes.OriginalMessageId,
                 DateTime = mes.DateTime,
                 UserId = mes.UserId,
                 Text = mes.Text

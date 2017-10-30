@@ -8,6 +8,8 @@ namespace Twits.BLL.Interfaces
 {
     public interface IMessage
     {
+        DTOModels.DTOViewMessage GetMessageById(int id);
+            
         IEnumerable<DTOModels.DTOViewMessage> GetAllMessages();
 
         IEnumerable<DTOModels.DTOViewMessage> GetAllMessagesWithTag(string tag);
@@ -17,5 +19,7 @@ namespace Twits.BLL.Interfaces
         IEnumerable<DTOModels.DTOViewMessage> GetFeed(int userId);
 
         IEnumerable<DTOModels.DTOViewMessage> GetLastMessages(int count);
+
+        int GetRepostCount(int id);
     }
 }

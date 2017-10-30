@@ -23,6 +23,8 @@ namespace Twits.BLL.Services
                 (m, u) => new DTOModels.DTOViewMessage
                 {
                     Id = m.Id,
+                    OriginalMessageId = m.OriginalMessageId,
+                    RepostCount = GetRepostCount(m.Id),
                     DateTime = m.DateTime,
                     Text = m.Text,
                     UserId = u.Id,
@@ -43,7 +45,18 @@ namespace Twits.BLL.Services
 
         public IEnumerable<DTOViewMessage> GetAllUserMessages(int userId)
         {
-            return db.Messages.GetAll(m => m.UserId == userId).OrderByDescending(m=>m.DateTime).ToBll();
+            return db.Messages.GetAll().Join(db.Users.GetAll(u => u.Id == userId), m => m.UserId, u => u.Id,
+                (m, u) => new DTOModels.DTOViewMessage
+                {
+                    Id = m.Id,
+                    OriginalMessageId = m.OriginalMessageId,
+                    RepostCount = GetRepostCount(m.Id),
+                    DateTime = m.DateTime,
+                    Text = m.Text,
+                    UserId = u.Id,
+                    Login = u.Login
+                });
+
         }
 
         public IEnumerable<DTOViewMessage> GetFeed(int userId)
@@ -59,6 +72,7 @@ namespace Twits.BLL.Services
                         (uf, m) => new DTOModels.DTOViewMessage
                         {
                             Id = m.Id,
+                            OriginalMessageId = m.OriginalMessageId,
                             DateTime = m.DateTime,
                             UserId = m.UserId,
                             Login = uf.f.ReadUser.Login,
@@ -76,11 +90,31 @@ namespace Twits.BLL.Services
                 (m, u) => new DTOModels.DTOViewMessage
                 {
                     Id = m.Id,
+                    OriginalMessageId = m.OriginalMessageId,
                     DateTime = m.DateTime,
                     Text = m.Text,
                     UserId = u.Id,
                     Login = u.Login
                 });
+        }
+
+        public DTOViewMessage GetMessageById(int id)
+        {
+            return db.Messages.Read(m => m.Id == id).ToBll();
+        }
+
+        public int GetRepostCount(int id)
+        {
+            var reposts = db.Messages.GetAll(m => m.OriginalMessageId == id);
+
+            if(reposts!=null)
+            {
+                return reposts.Count();
+            }
+            else
+            {
+                return 0;
+            }
         }
     }
 }

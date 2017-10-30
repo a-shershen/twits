@@ -22,6 +22,7 @@ namespace Twits.BLL.CustomMappers
         {
             return new DAL.Models.Message
             {
+                OriginalMessageId = message.OriginalMessageId,
                 DateTime = message.DateTime,
                 Text = message.Text,
                 UserId = message.UserId
