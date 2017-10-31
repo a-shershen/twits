@@ -9,10 +9,10 @@ namespace Twits.WEB.Models
 {
     public class LoginModel
     {
-        [Required]
+        [Required(ErrorMessage ="Поле обязательно для заполнения")]
         public string Login { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Поле обязательно для заполнения")]
         public string Password { get; set; }
     }
 }

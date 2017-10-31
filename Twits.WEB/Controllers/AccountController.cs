@@ -25,6 +25,8 @@ namespace Twits.WEB.Controllers
         [HttpPost]
         public ActionResult Login(Models.LoginModel model)
         {
+            ViewBag.LoginError = false;
+
             if(ModelState.IsValid)
             {
                 if (accountService.IsPasswordTrue(model.Login, Hash.Hash.GetHash(model.Password)))
@@ -35,11 +37,15 @@ namespace Twits.WEB.Controllers
                 }
                 else
                 {
+                    ViewBag.LoginError = true;
+
                     return View(model);
                 }
             }
             else
             {
+                ViewBag.LoginError = true;
+
                 return View(model);
             }
 

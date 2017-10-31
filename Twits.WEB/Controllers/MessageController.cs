@@ -36,9 +36,12 @@ namespace Twits.WEB.Controllers
                 {
                     var orMes = messageService.GetMessageById(dtoMes.OriginalMessageId ?? 0);
 
-                    orMes.Login = userService.GetUserNameById(orMes.UserId);
+                    if (orMes != null)
+                    {
+                        orMes.Login = userService.GetUserNameById(orMes.UserId);
 
-                    mes.OriginalMessage = orMes.ToWeb();
+                        mes.OriginalMessage = orMes.ToWeb();
+                    }
                 }
 
                 messages.Add(mes);                
@@ -61,7 +64,10 @@ namespace Twits.WEB.Controllers
                 {
                     var orMes = messageService.GetMessageById(dtoMes.OriginalMessageId ?? 0);
 
-                    mes.OriginalMessage = orMes.ToWeb();
+                    if (orMes != null)
+                    {
+                        mes.OriginalMessage = orMes.ToWeb();
+                    }
                 }
 
                 messages.Add(mes);

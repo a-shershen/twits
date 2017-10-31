@@ -9,15 +9,26 @@
 
 @using (Html.BeginForm("Login", "Account", FormMethod.Post))
 {
+
+
     @Html.LabelFor(m=>m.Login, "Логин:")
     @Html.TextBoxFor(m=>m.Login)
+    
 
     <br />
 
     @Html.LabelFor(m=>m.Password, "Пароль")
     @Html.PasswordFor(m=>m.Password)
+    
 
     <br />
+
+    if(ViewBag.LoginError != null && ViewBag.LoginError)
+    {
+        <div>
+            Ошибка авторизации
+        </div>
+    }
 
     <input type="submit" />
 }

@@ -4,11 +4,28 @@
     Layout = "~/Views/_MainLayout.cshtml";
 }
 
+@{ 
+    string userName = ViewBag.UserName as string;
+}
+
+<script>
+    $(document).ready(function () {
+        var name = "@userName";
+
+        if (name != null) {
+            $("#showContent").load("/User/UserMessages?user=" + name);
+            }
+        else {
+            $("#showContent").load("/User/UserMessages");
+        }
+    });
+</script>
+
 <h2>UserInfo</h2>
 
 <div>
     @{ 
-        string userName = ViewBag.UserName as string;
+        
         @Html.ActionLink(userName, "UserInfo", "User", new { user = userName }, null)
         }
 </div>

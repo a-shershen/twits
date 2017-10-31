@@ -1,5 +1,12 @@
 ﻿@model Twits.WEB.Models.NewMessage
 
+<script>
+    function count()
+    {
+        $("#symbolsCount").text($("#messageText").val().length);
+    }
+</script>
+
 @using (@Ajax.BeginForm(
     "AddNewMessage", "User", 
     new AjaxOptions {
@@ -9,7 +16,10 @@
 }))
 {
     @Html.LabelFor(m=>m.Text, "Текст сообщения:")
-    @Html.TextAreaFor(m=>m.Text)
+    @Html.TextAreaFor(m=>m.Text, new { id = "messageText", onkeyup = "count();", maxlength=140 })
+    @Html.ValidationMessageFor(m=>m.Text)
+
+    @Html.Label("0", new { id="symbolsCount"})
 
     <br />
 

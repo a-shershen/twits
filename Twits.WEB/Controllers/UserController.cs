@@ -78,71 +78,98 @@ namespace Twits.WEB.Controllers
         [HttpPost]
         public ActionResult AddNewMessage(Models.NewMessage model)
         {
-            List<string> tags = new List<string>();
-
-            foreach(var tag in System.Text.RegularExpressions.Regex.Matches(model.Text, @"#\w+"))
+            if (ModelState.IsValid)
             {
-                tags.Add(tag.ToString());
-            }
-
-            BLL.DTOModels.DTOMessage message = new BLL.DTOModels.DTOMessage
-            {
-                DateTime = DateTime.Now,
-                Tags = tags,
-                Text = model.Text,
-                UserId = userService.GetUserIdByName(User.Identity.Name)                
-            };
-
-            userService.AddNewMessage(message);
-
-            return RedirectToAction("UserMessages");
-        }
-
-        public ActionResult MakeRepost(string username, int id)
-        {
-            if (User.Identity.Name != username)
-            {
-                if(userService.IsRepostAlreadyMade(User.Identity.Name, id))
-                {
-                    if(Request.IsAjaxRequest())
-                    {
-                        Request.Abort();
-                    }
-
-                    return null;
-                }
-
-                var message = messageService.GetMessageById(id);
-
                 List<string> tags = new List<string>();
 
-                foreach (var tag in System.Text.RegularExpressions.Regex.Matches(message.Text, @"#\w+"))
+                foreach (var tag in System.Text.RegularExpressions.Regex.Matches(model.Text, @"#\w+"))
                 {
                     tags.Add(tag.ToString());
                 }
 
-                userService.AddNewMessage(
-                    new BLL.DTOModels.DTOMessage
-                    {
-                        Text = message.Text,
-                        Tags = tags,
-                        DateTime = DateTime.Now,
-                        UserId = userService.GetUserIdByName(User.Identity.Name),
-                        OriginalMessageId = message.Id
-                    });
+                BLL.DTOModels.DTOMessage message = new BLL.DTOModels.DTOMessage
+                {
+                    DateTime = DateTime.Now,
+                    Tags = tags,
+                    Text = model.Text,
+                    UserId = userService.GetUserIdByName(User.Identity.Name)
+                };
+
+                userService.AddNewMessage(message);
 
                 return RedirectToAction("UserMessages");
             }
-
             else
             {
-                if (Request.IsAjaxRequest())
-                {
-                    Request.Abort();
-                }
-
-                return null;
+                return View(model);
             }
+        }
+
+        public ActionResult MakeRepost(int id)
+        {
+            if (User == null)
+            {
+                return new HttpStatusCodeResult(400);
+            }
+
+            var mes = messageService.GetMessageById(id);
+
+            if (mes == null)
+            {
+                return new HttpStatusCodeResult(400);
+            }
+            else
+            {
+                if (userService.GetUserNameById(mes.UserId) == User.Identity.Name)
+                {
+                    return new HttpStatusCodeResult(400);
+                }
+            }
+
+            if (userService.IsRepostAlreadyMade(User.Identity.Name, id))
+            {
+                return new HttpStatusCodeResult(400);
+            }
+
+            var message = messageService.GetMessageById(id);
+
+            List<string> tags = new List<string>();
+
+            foreach (var tag in System.Text.RegularExpressions.Regex.Matches(message.Text, @"#\w+"))
+            {
+                tags.Add(tag.ToString());
+            }
+
+            userService.AddNewMessage(
+                new BLL.DTOModels.DTOMessage
+                {
+                    Text = message.Text,
+                    Tags = tags,
+                    DateTime = DateTime.Now,
+                    UserId = userService.GetUserIdByName(User.Identity.Name),
+                    OriginalMessageId = message.Id
+                });
+
+            return RedirectToAction("UserMessages");
+        }
+            
+        public ActionResult DeleteMessage(int id)
+        {
+            var message = messageService.GetMessageById(id);
+
+            if (message == null)
+            {
+                return new HttpStatusCodeResult(400);
+            }
+
+            if (message.UserId != userService.GetUserIdByName(User.Identity.Name))
+            {
+                return new HttpStatusCodeResult(400);
+            }
+
+            userService.DeleteMessage(id);
+
+            return new HttpStatusCodeResult(200);
         }
 
         [AllowAnonymous]
@@ -166,13 +193,16 @@ namespace Twits.WEB.Controllers
                         {                            
                             var originalMessage = messageService.GetMessageById(mes.OriginalMessageId??0);
 
-                            message.OriginalMessage = new Models.UserMessage
+                            if (originalMessage != null)
                             {
-                                Id = originalMessage.Id,
-                                DateTime = originalMessage.DateTime,
-                                Login = originalMessage.Login,
-                                Text = originalMessage.Text                                
-                            };
+                                message.OriginalMessage = new Models.UserMessage
+                                {
+                                    Id = originalMessage.Id,
+                                    DateTime = originalMessage.DateTime,
+                                    Login = originalMessage.Login,
+                                    Text = originalMessage.Text
+                                };
+                            }
                         }
 
                         messages.Add(message);
@@ -206,13 +236,16 @@ namespace Twits.WEB.Controllers
                     {
                         var originalMessage = messageService.GetMessageById(mes.OriginalMessageId ?? 0);
 
-                        message.OriginalMessage = new Models.UserMessage
+                        if (originalMessage != null)
                         {
-                            Id = originalMessage.Id,
-                            DateTime = originalMessage.DateTime,
-                            Login = userService.GetUserNameById(originalMessage.UserId),
-                            Text = originalMessage.Text
-                        };
+                            message.OriginalMessage = new Models.UserMessage
+                            {
+                                Id = originalMessage.Id,
+                                DateTime = originalMessage.DateTime,
+                                Login = userService.GetUserNameById(originalMessage.UserId),
+                                Text = originalMessage.Text
+                            };
+                        }
                     }
 
                     messages.Add(message);

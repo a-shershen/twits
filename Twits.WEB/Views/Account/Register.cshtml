@@ -11,16 +11,19 @@
 {
     @Html.LabelFor(m=>m.Login, "Логин:")
     @Html.TextBoxFor(m=>m.Login)
+    @Html.ValidationMessageFor(m=>m.Login)
 
     <br />
 
     @Html.LabelFor(m=>m.Password, "Пароль:")
     @Html.PasswordFor(m=>m.Password)
+    @Html.ValidationMessageFor(m=>m.Password)
 
     <br />
 
     @Html.LabelFor(m=>m.ConfirmPassword, "Повторите пароль:")
     @Html.PasswordFor(m=>m.ConfirmPassword)
+    @Html.ValidationMessageFor(m=>m.ConfirmPassword)
 
     <br />
 

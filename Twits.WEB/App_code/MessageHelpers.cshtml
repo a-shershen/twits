@@ -65,7 +65,7 @@ if (mes.OriginalMessage == null)
 
             @if (manage)
             {
-                <span class="link" onclick="makeRepost('@mes.Login', @mes.Id);">Сделать репост</span>
+                <span class="link" onclick="makeRepost(@mes.Id);">Сделать репост</span>
             }
         </div>        
 
@@ -136,9 +136,16 @@ int n;
 
                 @if (manage)
                 {
-                    <span class="link" onclick="makeRepost('@mes.Login', @mes.OriginalMessage.Id);">Сделать репост</span>
+                    <span class="link" onclick="makeRepost(@mes.OriginalMessage.Id);">Сделать репост</span>
                 }
             </div>
+
+            @if (isItMe)
+            {
+                <div>
+                    <span class="link" onclick="deleteMessage(@mes.Id);">Удалить репост</span>
+                </div>
+            }
         </div>
 }
     <br />
