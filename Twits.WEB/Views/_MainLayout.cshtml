@@ -4,18 +4,23 @@
 <head>
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title</title>
-    <script src="~/Scripts/jquery-1.8.0.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="~/Scripts/bootstrap.min.js" type="text/javascript"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"></script>
     <script src="~/Scripts/Messages.js" type="text/javascript"></script>
+
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css" />
     <link rel="stylesheet" href="~/Styles/Main.css" type="text/css" />
+    
 </head>
 <body>
-    <div class="mainDiv">
-        <header id="header">
-            @Html.Action("TopPanel", "Home")
-        </header>
+    <div class="container mainDiv">
 
-        <main id="main">
+        <div class="container">
+            @Html.Action("TopPanel", "Home")
+        </div>
+
+        <main id="main" class="container">
             @RenderBody()
         </main>
     </div>

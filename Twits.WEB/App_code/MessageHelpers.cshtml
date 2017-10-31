@@ -4,9 +4,9 @@
 
 bool manage = false;
 
-if(User!=null && User.Identity.IsAuthenticated)
+if (User != null && User.Identity.IsAuthenticated)
 {
-        manage = true;
+    manage = true;
 }
 
 if (mes.OriginalMessage == null)
@@ -36,21 +36,22 @@ if (mes.OriginalMessage == null)
 
     xList = xList.OrderBy(x => x.Item1).ToList();
 
-    <div class="messageDiv">
-        @if (mes.Login != null)
+
+
+        if (mes.Login != null)
         {
-        <div>
+        <div class="col-xs-12">
             <a href="~/User/UserInfo?user=@mes.Login">
                 @mes.Login
             </a>
         </div>
         }
 
-        <div>
+        <div class="col-xs-12">
             @mes.DateTime
         </div>
 
-        <div class="">
+        <div  class="col-xs-12">
             @foreach (var item in xList)
         {
             if (item.Item2.First() == '#')
@@ -60,7 +61,7 @@ if (mes.OriginalMessage == null)
             }
         </div>
 
-        <div>
+        <div class="col-xs-12">
             Репосты: @mes.RepostCount
 
             @if (manage)
@@ -69,19 +70,18 @@ if (mes.OriginalMessage == null)
             }
         </div>        
 
-        @if(isItMe)
+        if (isItMe)
         {
-            <div>
-                <span class="link" onclick="deleteMessage(@mes.Id);">Удалить</span>
+            <div class="col-xs-12">
+                <span class="link" onclick="deleteMessage(@mes.Id, @mes.Login);">Удалить</span>
             </div>
         }
-
-    </div>
 }
 
 else
 {
-        <div>
+
+            <div  class="col-xs-12">
             <a href="/User/UserInfo?user=@mes.Login">
                 @mes.Login
             </a>
@@ -95,9 +95,9 @@ else
 
     var words = System.Text.RegularExpressions.Regex.Split(mes.OriginalMessage.Text, @"#\w+");
 
-List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
+    List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
 
-int n;
+    int n;
 
     foreach (var t in tags)
     {
@@ -116,22 +116,22 @@ int n;
 
     xList = xList.OrderBy(x => x.Item1).ToList();
 
-        <div class="messageDiv">
-            <div>
+
+            <div class="col-xs-12">
                 @mes.OriginalMessage.DateTime
             </div>
 
-            <div class="">
+            <div  class="col-xs-12">
                 @foreach (var item in xList)
-{
-    if (item.Item2.First() == '#')
-    {<span class="hashtag" onclick="searchByTag('@item.Item2');">@item.Item2</span>}
+                {
+                    if (item.Item2.First() == '#')
+                    {<span class="hashtag" onclick="searchByTag('@item.Item2');">@item.Item2</span>}
                     else
                     {@item.Item2}
                 }
             </div>
 
-            <div>
+            <div class="col-xs-12">
                 Репосты: @mes.RepostCount
 
                 @if (manage)
@@ -140,13 +140,12 @@ int n;
                 }
             </div>
 
-            @if (isItMe)
+            if(isItMe)
             {
-                <div>
+                <div class="col-xs-12">
                     <span class="link" onclick="deleteMessage(@mes.Id);">Удалить репост</span>
                 </div>
             }
-        </div>
-}
-    <br />
+
+    }
 }

@@ -179,6 +179,9 @@ namespace Twits.WEB.Controllers
             {
                 if (User != null && User.Identity.IsAuthenticated)
                 {
+
+                    ViewBag.IsItMe = true;
+
                     var dtoMessages = messageService.GetAllUserMessages(userService.GetUserIdByName(User.Identity.Name));
 
                     List<Twits.WEB.Models.UserMessage> messages = new List<Models.UserMessage>();

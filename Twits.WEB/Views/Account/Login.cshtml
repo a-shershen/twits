@@ -5,25 +5,25 @@
     Layout = "~/Views/_MainLayout.cshtml";
 }
 
-<h2>Login</h2>
-
+<div class="container">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
 @using (Html.BeginForm("Login", "Account", FormMethod.Post))
 {
 
 
-    @Html.LabelFor(m=>m.Login, "Логин:")
-    @Html.TextBoxFor(m=>m.Login)
-    
+    @Html.LabelFor(m => m.Login, "Логин:")
+    @Html.TextBoxFor(m => m.Login)
+
 
     <br />
 
-    @Html.LabelFor(m=>m.Password, "Пароль")
-    @Html.PasswordFor(m=>m.Password)
-    
+    @Html.LabelFor(m => m.Password, "Пароль")
+    @Html.PasswordFor(m => m.Password)
+
 
     <br />
 
-    if(ViewBag.LoginError != null && ViewBag.LoginError)
+    if (ViewBag.LoginError != null && ViewBag.LoginError)
     {
         <div>
             Ошибка авторизации
@@ -32,3 +32,6 @@
 
     <input type="submit" />
 }
+    </div>
+</div>
+

@@ -1,29 +1,29 @@
-﻿<div class="logo inline-block">
-    @Html.ActionLink("TWITS!", "Index", "Home")
-</div>
-
-@if (@User.Identity.IsAuthenticated)
-{
-    <div class="inline-block">
-        @Html.ActionLink("Редактировать", "Edit", "User")
+﻿<div class="logo col-xs-12 col-sm-2">
+        @Html.ActionLink("TWITS!", "Index", "Home")
     </div>
 
-    <div class="inline-block">
-        @Html.ActionLink(@User.Identity.Name, "UserInfo", "User")
-    </div>
+    @if (@User.Identity.IsAuthenticated)
+    {
+        @*<div class="col-xs-3">
+                @Html.ActionLink("Редактировать", "Edit", "User")
+            </div>*@
 
-    <div class="inline-block">
-        @Html.ActionLink("Выйти!", "Logout", "Account")
-    </div>
+            <div class="col-xs-12 col-sm-2 col-sm-offset-8">
+                @Html.ActionLink(@User.Identity.Name, "UserInfo", "User") 
+                |
+                @Html.ActionLink("Выйти!", "Logout", "Account")
+            </div>
 
-}
-else
-{
-        @: Войди или зарегистрируйся!
-    <div class="inline-block">
-        @Html.ActionLink("Войти!", "Login", "Account")
-    </div>
-    <div class="inline-block">
-        @Html.ActionLink("Зарегистрируйся!", "Register", "Account")
-    </div>
-}
+    }
+    else
+    {
+        <div class="col-xs-12 col-sm-4 col-sm-offset-6">
+            @Html.ActionLink("Войти!", "Login", "Account")
+            |
+            @Html.ActionLink("Зарегистрируйся!", "Register", "Account")
+        </div>
+    }
+
+
+
+

@@ -8,11 +8,15 @@
     {
         if (ViewBag.IsItMe != null && ViewBag.IsItMe == true)
         {
-            @MessageHelpers.PrintMessage(mes, true)
+            <div class="container">
+                @MessageHelpers.PrintMessage(mes, true)
+            </div>
         }
         else
         {
-            @MessageHelpers.PrintMessage(mes)
+            <div class="container">
+                @MessageHelpers.PrintMessage(mes)
+            </div>
         }
     }
 }

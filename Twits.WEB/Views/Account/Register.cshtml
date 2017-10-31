@@ -5,27 +5,30 @@
     Layout = "~/Views/_MainLayout.cshtml";
 }
 
-<h2>Register</h2>
+<div class="container">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post))
+        {
+            @Html.LabelFor(m => m.Login, "Логин:")
+            @Html.TextBoxFor(m => m.Login)
+            @Html.ValidationMessageFor(m => m.Login)
 
-@using (Html.BeginForm("Register", "Account", FormMethod.Post))
-{
-    @Html.LabelFor(m=>m.Login, "Логин:")
-    @Html.TextBoxFor(m=>m.Login)
-    @Html.ValidationMessageFor(m=>m.Login)
+            <br />
 
-    <br />
+            @Html.LabelFor(m => m.Password, "Пароль:")
+            @Html.PasswordFor(m => m.Password)
+            @Html.ValidationMessageFor(m => m.Password)
 
-    @Html.LabelFor(m=>m.Password, "Пароль:")
-    @Html.PasswordFor(m=>m.Password)
-    @Html.ValidationMessageFor(m=>m.Password)
+            <br />
 
-    <br />
+            @Html.LabelFor(m => m.ConfirmPassword, "Повторите пароль:")
+            @Html.PasswordFor(m => m.ConfirmPassword)
+            @Html.ValidationMessageFor(m => m.ConfirmPassword)
 
-    @Html.LabelFor(m=>m.ConfirmPassword, "Повторите пароль:")
-    @Html.PasswordFor(m=>m.ConfirmPassword)
-    @Html.ValidationMessageFor(m=>m.ConfirmPassword)
+            <br />
 
-    <br />
+            <input type="submit" />
+        }
+    </div>
+</div>
 
-    <input type="submit" />
-}

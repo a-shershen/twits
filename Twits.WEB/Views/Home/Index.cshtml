@@ -12,8 +12,12 @@
     });
 </script>
 
-<menu>
-    <menuitem>
+<noscript>
+    Для работы необходим JavaScript
+</noscript>
+
+<div class="container row">
+    <div class="col-xs-12 col-sm-3">
         @Ajax.ActionLink("Последние сообщения", "LastMessages", "Message",
        new AjaxOptions
        {
@@ -21,16 +25,11 @@
            InsertionMode = InsertionMode.Replace,
            UpdateTargetId = "showContent"
        })
+    </div>
 
-    </menuitem>
+    <div class="col-xs-12 col-sm-9">
+        <div id="showContent">
 
-</menu>
-
-<noscript>
-    Для работы необходим JavaScript
-</noscript>
-
-
-<div id="showContent">
-
+        </div>
+    </div>
 </div>
