@@ -27,5 +27,7 @@ namespace Twits.BLL.Interfaces
         void Unsubscribe(string user, string subscription);
 
         bool IsRepostAlreadyMade(string user, int messageId);
+
+        void DeleteMessage(int id);
     }
 }

@@ -100,7 +100,16 @@ namespace Twits.BLL.Services
 
         public DTOViewMessage GetMessageById(int id)
         {
-            return db.Messages.Read(m => m.Id == id).ToBll();
+            var mes = db.Messages.Read(m => m.Id == id);
+
+            if(mes!=null)
+            {
+                return mes.ToBll();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public int GetRepostCount(int id)

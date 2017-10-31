@@ -29,6 +29,13 @@ namespace Twits.BLL.Services
             db.Save();
         }
 
+        public void DeleteMessage(int id)
+        {
+            db.Messages.Delete(m => m.OriginalMessageId == id);
+            db.Messages.Delete(m => m.Id == id);
+            db.Save();
+        }
+
         public void Follow(int userId, int followUserId)
         {
             db.Subscriptions.Create(new DAL.Models.Subscription { ReadUserId = followUserId, UserId = userId });
