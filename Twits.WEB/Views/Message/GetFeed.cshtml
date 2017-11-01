@@ -1,21 +1,27 @@
 ﻿@model IEnumerable<Twits.WEB.Models.UserMessage>
 
-@if(Model == null)
+@if (Model == null)
 {
-    @: Нет сообщений
+    <div class="col-xs-12">
+        Нет сообщений
+    </div>
 }
 else
 {
-    if(Model.Count()==0)
+    if (Model.Count() == 0)
     {
-        @: Нет сообщений
+        <div class="col-xs-12">
+            Нет сообщений
+        </div>
     }
 
     else
     {
-        foreach(var mes in Model)
+        foreach (var mes in Model)
         {
-            @MessageHelpers.PrintMessage(mes)
+            <div class="container col-xs-12 messageDiv">
+                @MessageHelpers.PrintMessage(mes)
+            </div>
         }
     }
 }

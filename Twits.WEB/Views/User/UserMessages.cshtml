@@ -2,25 +2,28 @@
 
 
 
-@if (Model != null && Model.Count() != 0)
-{
-    foreach (var mes in Model)
+    @if (Model != null && Model.Count() != 0)
     {
-        if (ViewBag.IsItMe != null && ViewBag.IsItMe == true)
+        foreach (var mes in Model)
         {
-            <div class="container">
-                @MessageHelpers.PrintMessage(mes, true)
-            </div>
-        }
-        else
-        {
-            <div class="container">
-                @MessageHelpers.PrintMessage(mes)
-            </div>
+            if (ViewBag.IsItMe != null && ViewBag.IsItMe == true)
+            {
+                <div class="container col-xs-12 messageDiv">
+                    @MessageHelpers.PrintMessage(mes, true)
+                </div>
+
+            }
+            else
+            {
+                <div class="container col-xs-12 messageDiv">
+                    @MessageHelpers.PrintMessage(mes)
+                </div>
+            }
         }
     }
-}
-else
-{
-    @: Сообщений нет
-}
+    else
+    {
+        <div class="col-xs-12">
+            Нет сообщений
+        </div>
+    }

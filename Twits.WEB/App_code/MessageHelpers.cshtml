@@ -1,127 +1,57 @@
 ﻿
 @helper PrintMessage(Twits.WEB.Models.UserMessage mes, bool isItMe = false)
-    {
+{
 
 bool manage = false;
 
-if (User != null && User.Identity.IsAuthenticated)
-{
-    manage = true;
-}
-
-if (mes.OriginalMessage == null)
-{
-    var tags = System.Text.RegularExpressions.Regex.Matches(mes.Text, @"#\w+");
-
-    var words = System.Text.RegularExpressions.Regex.Split(mes.Text, @"#\w+");
-
-    List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
-
-    int n;
-
-    foreach (var t in tags)
+    if (User != null && User.Identity.IsAuthenticated)
     {
-        n = mes.Text.IndexOf(t.ToString());
-
-        xList.Add(new Tuple<int, string>(n, t.ToString()));
+        manage = true;
     }
 
-    foreach (var w in words)
-    {
-        n = mes.Text.IndexOf(w);
-        xList.Add(new Tuple<int, string>(n, w));
-    }
-
-    xList.RemoveAll(t => t.Item2 == "");
-
-    xList = xList.OrderBy(x => x.Item1).ToList();
 
 
-
-        if (mes.Login != null)
-        {
-        <div class="col-xs-12">
-            <a href="~/User/UserInfo?user=@mes.Login">
-                @mes.Login
-            </a>
-        </div>
-        }
-
-        <div class="col-xs-12">
-            @mes.DateTime
-        </div>
-
-        <div  class="col-xs-12">
-            @foreach (var item in xList)
-        {
-            if (item.Item2.First() == '#')
-            {<span class="hashtag" onclick="searchByTag('@item.Item2');">@item.Item2</span>}
-                else
-                {@item.Item2}
-            }
-        </div>
-
-        <div class="col-xs-12">
-            Репосты: @mes.RepostCount
-
-            @if (manage)
+            if (mes.OriginalMessage == null)
             {
-                <span class="link" onclick="makeRepost(@mes.Id);">Сделать репост</span>
-            }
-        </div>        
+                var tags = System.Text.RegularExpressions.Regex.Matches(mes.Text, @"#\w+");
 
-        if (isItMe)
-        {
-            <div class="col-xs-12">
-                <span class="link" onclick="deleteMessage(@mes.Id, @mes.Login);">Удалить</span>
-            </div>
-        }
-}
+                var words = System.Text.RegularExpressions.Regex.Split(mes.Text, @"#\w+");
 
-else
-{
+                List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
 
-            <div  class="col-xs-12">
-            <a href="/User/UserInfo?user=@mes.Login">
-                @mes.Login
-            </a>
-            ретвитнул 
-            <a href="/User/UserInfo?user=@mes.OriginalMessage.Login">
-                @mes.OriginalMessage.Login
-            </a>
-            @mes.DateTime
-        </div>
-    var tags = System.Text.RegularExpressions.Regex.Matches(mes.OriginalMessage.Text, @"#\w+");
+                int n;
 
-    var words = System.Text.RegularExpressions.Regex.Split(mes.OriginalMessage.Text, @"#\w+");
+                foreach (var t in tags)
+                {
+                    n = mes.Text.IndexOf(t.ToString());
 
-    List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
+                    xList.Add(new Tuple<int, string>(n, t.ToString()));
+                }
 
-    int n;
+                foreach (var w in words)
+                {
+                    n = mes.Text.IndexOf(w);
+                    xList.Add(new Tuple<int, string>(n, w));
+                }
 
-    foreach (var t in tags)
-    {
-        n = mes.OriginalMessage.Text.IndexOf(t.ToString());
+                xList.RemoveAll(t => t.Item2 == "");
 
-        xList.Add(new Tuple<int, string>(n, t.ToString()));
-    }
-
-    foreach (var w in words)
-    {
-        n = mes.OriginalMessage.Text.IndexOf(w);
-        xList.Add(new Tuple<int, string>(n, w));
-    }
-
-    xList.RemoveAll(t => t.Item2 == "");
-
-    xList = xList.OrderBy(x => x.Item1).ToList();
+                xList = xList.OrderBy(x => x.Item1).ToList();
 
 
-            <div class="col-xs-12">
-                @mes.OriginalMessage.DateTime
-            </div>
 
-            <div  class="col-xs-12">
+                if (mes.Login != null)
+                {
+                <div class="col-xs-12 col-sm-12 messageAuthor">
+                    <a href="~/User/UserInfo?user=@mes.Login">
+                        @mes.Login
+                    </a>
+                </div>
+                }
+
+            
+
+            <div class="col-xs-12 message">
                 @foreach (var item in xList)
                 {
                     if (item.Item2.First() == '#')
@@ -131,8 +61,100 @@ else
                 }
             </div>
 
-            <div class="col-xs-12">
-                Репосты: @mes.RepostCount
+            <div class="col-xs-12 col-sm-4">
+                <span class="smallGrey">
+                    @mes.DateTime.Hour:@mes.DateTime.Minute, @mes.DateTime.Date.ToLongDateString()
+                </span>
+            </div>
+
+            <div class="col-xs-12 col-sm-8 text-right">
+
+                <span class="glyphicon glyphicon-refresh blue" aria-hidden="true"></span>
+
+                @mes.RepostCount
+
+                @if (manage)
+                {
+                    <span class="link" onclick="makeRepost(@mes.Id);">Сделать репост</span>
+                }
+            </div>
+
+    if (isItMe)
+    {
+                <div class="col-xs-12">
+                    <span class="link" onclick="deleteMessage(@mes.Id);">Удалить</span>
+                </div>
+                }
+            }
+
+            else
+            {
+
+            <div class="col-xs-12 messageAuthor">
+                <a href="/User/UserInfo?user=@mes.Login">
+                    @mes.Login
+                </a>
+
+                    <span class="glyphicon glyphicon-refresh smallGrey blue" aria-hidden="true"></span>
+
+                    <a href="/User/UserInfo?user=@mes.OriginalMessage.Login">
+                        @mes.OriginalMessage.Login
+                    </a>
+                <span class="smallGrey">
+                    @mes.DateTime.Hour:@mes.DateTime.Minute, @mes.DateTime.Date.ToLongDateString()
+                </span>
+
+            </div>
+                var tags = System.Text.RegularExpressions.Regex.Matches(mes.OriginalMessage.Text, @"#\w+");
+
+                var words = System.Text.RegularExpressions.Regex.Split(mes.OriginalMessage.Text, @"#\w+");
+
+                List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
+
+                int n;
+
+                foreach (var t in tags)
+                {
+                    n = mes.OriginalMessage.Text.IndexOf(t.ToString());
+
+                    xList.Add(new Tuple<int, string>(n, t.ToString()));
+                }
+
+                foreach (var w in words)
+                {
+                    n = mes.OriginalMessage.Text.IndexOf(w);
+                    xList.Add(new Tuple<int, string>(n, w));
+                }
+
+                xList.RemoveAll(t => t.Item2 == "");
+
+                xList = xList.OrderBy(x => x.Item1).ToList();
+
+
+
+
+            <div  class="col-xs-12 message">
+                @foreach (var item in xList)
+                {
+                    if (item.Item2.First() == '#')
+                    {<span class="hashtag" onclick="searchByTag('@item.Item2');">@item.Item2</span>}
+                    else
+                    {@item.Item2}
+                }
+            </div>
+
+
+            <div class="col-xs-12 col-sm-4">
+                <span class="smallGrey">
+                    @mes.DateTime.Hour:@mes.DateTime.Minute, @mes.DateTime.Date.ToLongDateString()
+                </span>
+            </div>
+
+            <div class="col-xs-12 col-sm-8 text-right">
+
+                <span class="glyphicon glyphicon-refresh blue" aria-hidden="true"></span>
+
+                @mes.RepostCount
 
                 @if (manage)
                 {
@@ -140,12 +162,17 @@ else
                 }
             </div>
 
-            if(isItMe)
-            {
+
+
+    if (isItMe)
+    {
                 <div class="col-xs-12">
                     <span class="link" onclick="deleteMessage(@mes.Id);">Удалить репост</span>
                 </div>
+                }
+            }
             }
 
-    }
-}
+
+
+

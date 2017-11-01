@@ -1,4 +1,4 @@
-﻿function deleteMessage(messageId, user)
+﻿function deleteMessage(messageId)
 {
     if(confirm("Вы уыерены, что хотите удалить сообщение?"))
     {
