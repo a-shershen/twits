@@ -34,12 +34,18 @@ namespace Twits.BLL.Services
 
         public IEnumerable<DTOViewMessage> GetAllMessagesWithTag(string tag)
         {
-            var mesTags = db.Messages.GetAllQueryable().Join(db.Tags.GetAllQueryable(t => t.TagName == tag),
+            return db.Messages.GetAll().Join(db.Tags.GetAll(t => t.TagName == tag),
                 m => m.Id, t => t.MessageId,
-                (m, t) => m
-                );
-
-            return mesTags.AsEnumerable().ToBll();
+                (m, t) => new DTOModels.DTOViewMessage
+                {
+                    Id = m.Id,
+                    OriginalMessageId = m.OriginalMessageId,
+                    RepostCount = GetRepostCount(m.Id),
+                    DateTime = m.DateTime,
+                    Text = m.Text,
+                    UserId = m.UserId,
+                    Login = m.User.Login
+                }).OrderByDescending(m => m.DateTime);
 
         }
 
