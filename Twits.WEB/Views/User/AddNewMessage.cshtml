@@ -1,9 +1,10 @@
 ﻿@model Twits.WEB.Models.NewMessage
 
-<script>
+<script>       
     function count()
     {
-        $("#symbolsCount").text($("#messageText").val().length);
+        var i = 140 - $("#messageText").val().length;
+        $("#symbolsCount").text(i);
     }
 </script>
 
@@ -19,7 +20,7 @@
     @Html.TextAreaFor(m=>m.Text, new { id = "messageText", onkeyup = "count();", maxlength=140 })
     @Html.ValidationMessageFor(m=>m.Text)
 
-    @Html.Label("0", new { id="symbolsCount"})
+    @Html.Label("140", new { id="symbolsCount"})
 
     <br />
 

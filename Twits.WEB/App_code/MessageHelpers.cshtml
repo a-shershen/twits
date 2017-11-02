@@ -2,47 +2,55 @@
 @helper PrintMessage(Twits.WEB.Models.UserMessage mes, bool isItMe = false)
 {
 
+Func<int, string> getMonthName = i =>
+{
+    string[] monthes = new string[] { "декабря", "января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октярбя", "ноября", "декабря" };
+    return monthes[i];
+};
+
 bool manage = false;
 
-    if (User != null && User.Identity.IsAuthenticated)
+if (User != null && User.Identity.IsAuthenticated)
+{
+    manage = true;
+}
+
+if (mes.OriginalMessage == null)
+{
+    var tags = System.Text.RegularExpressions.Regex.Matches(mes.Text, @"#\w+");
+
+    var words = System.Text.RegularExpressions.Regex.Split(mes.Text, @"#\w+");
+
+    List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
+
+    int n;
+
+    foreach (var t in tags)
     {
-        manage = true;
+        n = mes.Text.IndexOf(t.ToString());
+
+        xList.Add(new Tuple<int, string>(n, t.ToString()));
     }
 
+    foreach (var w in words)
+    {
+        n = mes.Text.IndexOf(w);
+        xList.Add(new Tuple<int, string>(n, w));
+    }
 
+    xList.RemoveAll(t => t.Item2 == "");
 
-            if (mes.OriginalMessage == null)
-            {
-                var tags = System.Text.RegularExpressions.Regex.Matches(mes.Text, @"#\w+");
-
-                var words = System.Text.RegularExpressions.Regex.Split(mes.Text, @"#\w+");
-
-                List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
-
-                int n;
-
-                foreach (var t in tags)
-                {
-                    n = mes.Text.IndexOf(t.ToString());
-
-                    xList.Add(new Tuple<int, string>(n, t.ToString()));
-                }
-
-                foreach (var w in words)
-                {
-                    n = mes.Text.IndexOf(w);
-                    xList.Add(new Tuple<int, string>(n, w));
-                }
-
-                xList.RemoveAll(t => t.Item2 == "");
-
-                xList = xList.OrderBy(x => x.Item1).ToList();
+    xList = xList.OrderBy(x => x.Item1).ToList();
 
 
 
-                if (mes.Login != null)
-                {
+    if (mes.Login != null)
+    {
                 <div class="col-xs-12 col-sm-12 messageAuthor">
+                    @{
+                        string path = "/Images/Avatars/av" + mes.Login + ".png";
+                    }
+                    <img class="xsmallImage" src=@path />
                     <a href="~/User/UserInfo?user=@mes.Login">
                         @mes.Login
                     </a>
@@ -53,28 +61,29 @@ bool manage = false;
 
             <div class="col-xs-12 message">
                 @foreach (var item in xList)
-                {
-                    if (item.Item2.First() == '#')
-                    {<span class="hashtag" onclick="searchByTag('@item.Item2');">@item.Item2</span>}
+    {
+        if (item.Item2.First() == '#')
+        {<a class="hashtag" href="/Message/SearchByTag?tag=@item.Item2.Replace("#", "")">@item.Item2</a>}
                     else
                     {@item.Item2}
                 }
             </div>
 
             <div class="col-xs-12 col-sm-4">
-                <span class="smallGrey">
-                    @mes.DateTime.Hour:@mes.DateTime.Minute, @mes.DateTime.Date.ToLongDateString()
+                <span class="smallGrey">                    
+                    @mes.DateTime.ToUniversalTime().AddHours(3).Hour:@mes.DateTime.Minute.ToString("d2"),
+                    @mes.DateTime.Date.Day @getMonthName(mes.DateTime.Month) @mes.DateTime.Year
                 </span>
             </div>
 
-            <div class="col-xs-12 col-sm-8 text-right">
+            <div class="col-xs-12 col-sm-8 textRight">
 
                 <span class="glyphicon glyphicon-refresh blue" aria-hidden="true"></span>
 
                 @mes.RepostCount
 
                 @if (manage)
-                {
+{
                     <span class="link" onclick="makeRepost(@mes.Id);">Сделать репост</span>
                 }
             </div>
@@ -82,7 +91,7 @@ bool manage = false;
     if (isItMe)
     {
                 <div class="col-xs-12">
-                    <span class="link" onclick="deleteMessage(@mes.Id);">Удалить</span>
+                    <span class="link" onclick="deleteMessage(@mes.Id, '@mes.Login');">Удалить</span>
                 </div>
                 }
             }
@@ -91,27 +100,38 @@ bool manage = false;
             {
 
             <div class="col-xs-12 messageAuthor">
+                @{
+                    string path = "/Images/Avatars/av" + mes.Login + ".png";
+                }
+                <img class="xsmallImage" src=@path />
+
                 <a href="/User/UserInfo?user=@mes.Login">
                     @mes.Login
                 </a>
 
                     <span class="glyphicon glyphicon-refresh smallGrey blue" aria-hidden="true"></span>
 
+                @{
+                    string orpath = "/Images/Avatars/av" + mes.OriginalMessage.Login + ".png";
+                }
+                <img class="xsmallImage" src=@orpath />
+
                     <a href="/User/UserInfo?user=@mes.OriginalMessage.Login">
                         @mes.OriginalMessage.Login
                     </a>
                 <span class="smallGrey">
-                    @mes.DateTime.Hour:@mes.DateTime.Minute, @mes.DateTime.Date.ToLongDateString()
+                    @mes.DateTime.ToUniversalTime().AddHours(3).Hour:@mes.DateTime.Minute.ToString("d2"),
+                    @mes.DateTime.Date.Day @getMonthName(mes.DateTime.Month) @mes.DateTime.Year
                 </span>
 
             </div>
                 var tags = System.Text.RegularExpressions.Regex.Matches(mes.OriginalMessage.Text, @"#\w+");
 
-                var words = System.Text.RegularExpressions.Regex.Split(mes.OriginalMessage.Text, @"#\w+");
+var words = System.Text.RegularExpressions.Regex.Split(mes.OriginalMessage.Text, @"#\w+");
 
-                List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
+List<Tuple<int, string>> xList = new List<Tuple<int, string>>();
 
-                int n;
+int n;
 
                 foreach (var t in tags)
                 {
@@ -135,9 +155,9 @@ bool manage = false;
 
             <div  class="col-xs-12 message">
                 @foreach (var item in xList)
-                {
-                    if (item.Item2.First() == '#')
-                    {<span class="hashtag" onclick="searchByTag('@item.Item2');">@item.Item2</span>}
+{
+    if (item.Item2.First() == '#')
+    {<a class="hashtag" href="/Message/SearchByTag?tag=@item.Item2.Replace("#","")">@item.Item2</a>}
                     else
                     {@item.Item2}
                 }
@@ -146,18 +166,19 @@ bool manage = false;
 
             <div class="col-xs-12 col-sm-4">
                 <span class="smallGrey">
-                    @mes.DateTime.Hour:@mes.DateTime.Minute, @mes.DateTime.Date.ToLongDateString()
+                    @mes.DateTime.ToUniversalTime().AddHours(3).Hour:@mes.DateTime.Minute.ToString("d2"),
+                    @mes.DateTime.Date.Day @getMonthName(mes.DateTime.Month) @mes.DateTime.Year
                 </span>
             </div>
 
-            <div class="col-xs-12 col-sm-8 text-right">
+            <div class="col-xs-12 col-sm-8 textRight">
 
                 <span class="glyphicon glyphicon-refresh blue" aria-hidden="true"></span>
 
                 @mes.RepostCount
 
                 @if (manage)
-                {
+{
                     <span class="link" onclick="makeRepost(@mes.OriginalMessage.Id);">Сделать репост</span>
                 }
             </div>
@@ -167,7 +188,7 @@ bool manage = false;
     if (isItMe)
     {
                 <div class="col-xs-12">
-                    <span class="link" onclick="deleteMessage(@mes.Id);">Удалить репост</span>
+                    <span class="link" onclick="deleteMessage(@mes.Id, '@mes.Login');">Удалить репост</span>
                 </div>
                 }
             }

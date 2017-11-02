@@ -1,4 +1,4 @@
-﻿function deleteMessage(messageId)
+﻿function deleteMessage(messageId, user)
 {
     if(confirm("Вы уыерены, что хотите удалить сообщение?"))
     {
@@ -11,7 +11,7 @@
                 alert("Возникла ошибка при удалении сообщения!");
             },
             success: function (data) {
-                $("#showContent").load("/User/UserMessages");
+                $("#showContent").load("/User/UserMessages?user=" + user);
             }
         });
     }

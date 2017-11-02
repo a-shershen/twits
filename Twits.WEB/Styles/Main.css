@@ -7,16 +7,31 @@ body {
     font-family: 'Open Sans', Arial, sans-serif;
     color: #303030;
     background-color: #B0E0F0;
+    background-image:url("../Images/bactw.png");
     width: 100%;
 }
 
 a, a:active, a:visited {
     color: #7070B0;
     text-decoration: none;
+
+    transition: 1s ease;
 }
 
 a:hover{
     color:#9090c0;
+    text-decoration: none;
+
+    transition: 0.1s ease;
+}
+
+a.white, a.white:active, a.white:visited{
+    color:white;
+    text-decoration: none;
+}
+
+a.white:hover{
+    color:#B0E0F0;
     text-decoration: none;
 }
 
@@ -29,6 +44,8 @@ a:hover{
 .mainDiv {
     background-color:#FFFFFF;
     margin:0 auto;
+    height:100%;
+    padding-bottom:25px;
 }
 
 .logo {
@@ -38,16 +55,20 @@ a:hover{
     text-decoration: none;
 }
 
-.messageDiv{
-    margin-bottom:20px;
-    border-bottom:1px solid #F0F0F0;
-    padding-bottom:10px;
+.messageDiv {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #F0F0F0;
+    padding-bottom: 5px;
+    padding-top:5px;
+
+    transition: 1s ease;
 }
 
 .messageDiv:hover {
-    margin-bottom: 20px;
     background-color: #fcfcff;
     box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.1);
+    
+    transition: 0.1s ease;
 }
 
 .messageAuthor{
@@ -86,3 +107,99 @@ a:hover{
     cursor: pointer;
     text-decoration: underline;
 }
+
+.button {
+    min-height: 30px;
+    min-width: 30px;
+    border: none;
+    background-color: #B0E0F0;
+    color: white;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    transition: 0.5s ease;
+}
+
+.button:hover
+{
+    background-color: #7070B0;
+    transition: 0.1s ease;
+}
+
+@media (min-width: 768px){
+    .textRight{
+        text-align:right;
+    }
+
+    .widthAuto{
+        width:auto;
+    }
+
+    menuitem {
+        background-color: none;
+    }
+}
+
+@media(max-width: 767px)
+{
+    menu
+    {
+        margin-top:20px;
+    }
+
+    #showContent
+    {
+        margin-top:20px;
+    }
+}
+
+.margin10{
+    margin-bottom:10px;
+}
+
+.margin25{
+    margin-bottom:25px;
+}
+
+.margin40 {
+    margin-bottom: 40px;
+}
+
+.backDarkBlue {
+    background-color: #7070B0;
+}
+
+.large, a.large{
+    font-size:large;
+}
+
+.bold, a.bold{
+    font-weight:bold;
+}
+
+.mediumImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    border: 3px solid #B0E0F0;
+}
+
+.smallImage {
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    border: 3px solid white;
+}
+
+.xsmallImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 20px;
+    border: 3px solid #7070B0;
+}
+
+input[type="file"]{
+    width:200px;
+}
+
+

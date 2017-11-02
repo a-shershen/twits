@@ -17,7 +17,26 @@ namespace Twits.WEB.Controllers
 
         public PartialViewResult GetSubscriptions(string user)
         {
-            return PartialView(userService.GetSubscriptions(user));
+            List<Models.SubscriptionUser> list = new List<Models.SubscriptionUser>();
+
+            var subs = userService.GetSubscriptions(user);
+
+            if (User != null && User.Identity.IsAuthenticated)
+            {
+                foreach (string sub in subs)
+                    list.Add(new Models.SubscriptionUser { Login = sub, Flag = userService.IsSubscribed(User.Identity.Name, sub) });
+            }
+            else
+            {
+                foreach (string sub in subs)
+                    list.Add(new Models.SubscriptionUser
+                    {
+                        Login = sub
+                    });
+            }
+                    
+
+            return PartialView(list);
         }
 
         [Authorize(Roles ="user")]

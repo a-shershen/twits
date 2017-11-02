@@ -19,6 +19,51 @@ namespace Twits.WEB.Controllers
             userService = iUser;
         }
 
+        public ActionResult SearchByTag(string tag = null)
+        {
+            if (tag == null || tag== "")
+            {
+                ViewBag.ErrorMessage = "Введите искомый тэг!";
+
+                return View();
+            }
+
+            if(!tag.StartsWith("#"))
+            {
+                tag = "#" + tag;
+            }            
+
+            var dtoMessages = messageService.GetAllMessagesWithTag(tag);
+
+            List<Models.UserMessage> messages = new List<Models.UserMessage>();
+
+            foreach (var dtoMes in dtoMessages)
+            {
+                dtoMes.RepostCount = messageService.GetRepostCount(dtoMes.Id);
+
+                var mes = dtoMes.ToWeb();
+
+                if (dtoMes.OriginalMessageId != null)
+                {
+                    var orMes = messageService.GetMessageById(dtoMes.OriginalMessageId ?? 0);
+
+                    if (orMes != null)
+                    {
+                        orMes.Login = userService.GetUserNameById(orMes.UserId);
+
+                        mes.OriginalMessage = orMes.ToWeb();
+                    }
+                }
+
+                messages.Add(mes);
+            }
+
+            ViewBag.Tag = tag;
+
+            return View(messages);
+
+        }
+
         // GET: Message
         public PartialViewResult LastMessages()
         {
@@ -66,6 +111,8 @@ namespace Twits.WEB.Controllers
 
                     if (orMes != null)
                     {
+                        orMes.Login = userService.GetUserNameById(orMes.UserId);
+
                         mes.OriginalMessage = orMes.ToWeb();
                     }
                 }

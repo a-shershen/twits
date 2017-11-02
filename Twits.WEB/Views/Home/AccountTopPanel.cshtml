@@ -1,6 +1,7 @@
-﻿<div class="logo col-xs-12 col-sm-2">
-        @Html.ActionLink("TWITS!", "Index", "Home")
-    </div>
+﻿<div class="col-xs-12 col-sm-2">
+    @Html.ActionLink("TWITS!", "Index", "Home", null, new { @class = "white logo" })    
+</div>
+
 
     @if (@User.Identity.IsAuthenticated)
     {
@@ -8,19 +9,34 @@
                 @Html.ActionLink("Редактировать", "Edit", "User")
             </div>*@
 
-            <div class="col-xs-12 col-sm-2 col-sm-offset-8">
-                @Html.ActionLink(@User.Identity.Name, "UserInfo", "User") 
-                |
-                @Html.ActionLink("Выйти!", "Logout", "Account")
+            <div class="col-xs-12 col-sm-10 textRight" style="padding-top:6px;">
+                <div class="col-xs-12">
+                    <a href="/User/UserInfo?user=@User.Identity.Name" class="white">
+                        @{string avapath = "/Images/Avatars/av" + User.Identity.Name + ".png"; }
+                        <img src="@avapath" class="smallImage" />
+
+                        <span>
+                            @User.Identity.Name
+                        </span>
+                    </a>
+                    |
+                    <span>
+                        @Html.ActionLink("Редактировать", "Edit", "User", null, new { @class = "white" })
+                    </span>
+                    |
+                    <span>
+                        @Html.ActionLink("Выйти!", "Logout", "Account", null, new { @class = "white" })
+                    </span>
+                </div>
             </div>
 
     }
     else
     {
-        <div class="col-xs-12 col-sm-4 col-sm-offset-6">
-            @Html.ActionLink("Войти!", "Login", "Account")
+        <div class="col-xs-12 col-sm-10 textRight" style="padding-top:6px;">
+            @Html.ActionLink("Войти!", "Login", "Account", null, new { @class = "white" })
             |
-            @Html.ActionLink("Зарегистрируйся!", "Register", "Account")
+            @Html.ActionLink("Зарегистрируйся!", "Register", "Account", null, new { @class = "white" })
         </div>
     }
 

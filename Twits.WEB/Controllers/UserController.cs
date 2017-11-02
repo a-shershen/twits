@@ -261,7 +261,56 @@ namespace Twits.WEB.Controllers
         [HttpGet]
         public ActionResult Edit()
         {
-            return View();
+            if(User!=null && User.Identity.IsAuthenticated)
+            {
+                return View();
+            }
+
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }            
+        }
+
+        [HttpPost]
+        public ActionResult UploadAvatar()
+        {
+            HttpPostedFileBase file = Request.Files[0];
+
+            if(file == null || file.FileName == "")
+            {
+                ViewBag.ErrorMessage = "Вы попытались загрузить пустой файл!";
+                return View("Edit");
+            }
+
+            if (file.ContentLength >= 10000000)
+            {
+                ViewBag.ErrorMessage = "Файл слишком большой (попробуйте меньше 5-7 мб)";
+                return View("Edit");
+            }
+
+            switch (file.ContentType)
+            {
+                case "image/jpeg":
+                    break;
+                case "image/png":
+                    break;
+                default:
+                    ViewBag.ErrorMessage = "Неверный формат";
+                    return View("Edit");
+            }
+
+            string noavPath = Server.MapPath("~/Images/Avatars/noav.png");
+
+            System.Drawing.Image img = System.Drawing.Image.FromStream(file.InputStream);
+
+            string filename = Server.MapPath("~/Images/Avatars/av" + User.Identity.Name + ".png");
+            
+            img.Save(filename, System.Drawing.Imaging.ImageFormat.Png);            
+
+            file.InputStream.Dispose();
+
+            return RedirectToAction("UserInfo", "User");
         }
     }
 }

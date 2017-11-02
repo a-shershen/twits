@@ -16,16 +16,23 @@
     Для работы необходим JavaScript
 </noscript>
 
-<div class="container row">
+<div class="row">
     <div class="col-xs-12 col-sm-3">
-        @Ajax.ActionLink("Последние сообщения", "LastMessages", "Message",
+        <div class="col-xs-12 bold margin10">
+            @Ajax.ActionLink("Последние сообщения", "LastMessages", "Message",
        new AjaxOptions
        {
            HttpMethod = "get",
            InsertionMode = InsertionMode.Replace,
            UpdateTargetId = "showContent"
        })
+        </div>
+        <div class="col-xs-12 bold margin10">
+            @Html.ActionLink("Поиск по тэгам", "SearchByTag", "Message")
+        </div>
     </div>
+
+    
 
     <div class="col-xs-12 col-sm-9">
         <div id="showContent">

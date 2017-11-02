@@ -60,7 +60,7 @@ namespace Twits.WEB.Controllers
         [HttpPost]
         public ActionResult Register(Models.RegisterModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 accountService.RegisterNewUser(new BLL.DTOModels.UserDTO
                 {
@@ -69,7 +69,10 @@ namespace Twits.WEB.Controllers
                     RoleId = accountService.GetRoleIdByName("user")
                 });
 
-                return RedirectToAction("UserInfo", "User", new { user = model.Login }); 
+                System.Web.Security.FormsAuthentication.SetAuthCookie(model.Login, true);
+
+                
+                return RedirectToAction("UserInfo", "User", new { user = model.Login });
             }
             else
             {

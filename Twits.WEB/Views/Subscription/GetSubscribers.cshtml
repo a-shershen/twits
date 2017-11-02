@@ -1,4 +1,4 @@
-﻿@model IEnumerable<string>
+﻿@model IEnumerable<Twits.WEB.Models.SubscriptionUser>
 
 @if (Model == null)
 {
@@ -20,7 +20,13 @@ else
     {
         foreach (var str in Model)
         {
-            <div class="col-xs-12">
+            <div class="col-xs-12 bold messageDiv">
+                @{
+                    string path = "/Images/Avatars/av" + str + ".png";
+                }
+
+                <img src="@path" class="xsmallImage" />
+
                 @Html.ActionLink(@str, "UserInfo", "User", new { user = @str }, null)
             </div>
         }
