@@ -33,15 +33,19 @@ namespace Twits.WEB.Controllers
                     {
                         Login = sub
                     });
-            }
-                    
+            }                    
 
             return PartialView(list);
         }
 
-        [Authorize(Roles ="user")]
+        [Authorize(Roles = "user")]
         public ActionResult Subscribe(string subscription)
         {
+            if (User.Identity.Name == subscription)
+            {
+                return RedirectToAction("UserInfo", "User", new { user = subscription });
+            }
+
             userService.Subscribe(User.Identity.Name, subscription);
 
             return RedirectToAction("UserInfo", "User", new { user = subscription });
@@ -51,6 +55,11 @@ namespace Twits.WEB.Controllers
         [Authorize(Roles = "user")]
         public ActionResult Unsubscribe(string subscription)
         {
+            if (User.Identity.Name == subscription)
+            {
+                return RedirectToAction("UserInfo", "User", new { user = subscription });
+            }
+
             userService.Unsubscribe(User.Identity.Name, subscription);
 
             return RedirectToAction("UserInfo", "User", new { user = subscription });
@@ -58,7 +67,25 @@ namespace Twits.WEB.Controllers
 
         public PartialViewResult GetSubscribers(string user)
         {
-            return PartialView(userService.GetSubscribers(user));
+            List<Models.SubscriptionUser> list = new List<Models.SubscriptionUser>();
+
+            var subs = userService.GetSubscribers(user);
+
+            if (User != null && User.Identity.IsAuthenticated)
+            {
+                foreach (string sub in subs)
+                    list.Add(new Models.SubscriptionUser { Login = sub, Flag = userService.IsSubscribed(User.Identity.Name, sub) });
+            }
+            else
+            {
+                foreach (string sub in subs)
+                    list.Add(new Models.SubscriptionUser
+                    {
+                        Login = sub
+                    });
+            }
+
+            return PartialView(list);
         }
 
 

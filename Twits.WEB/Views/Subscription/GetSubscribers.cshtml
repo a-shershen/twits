@@ -18,18 +18,39 @@ else
 
     else
     {
-        foreach (var str in Model)
-        {
-            <div class="col-xs-12 bold messageDiv">
-                @{
-                    string path = "/Images/Avatars/av" + str + ".png";
-                }
+        foreach (var user in Model)
+        { 
+            <div class="col-xs-12 bold messageDiv row">
+                <div class="col-xs-5 col-sm-3 text-center row">
+                    @{
+                            string path = "/Images/Avatars/av" + user.Login + ".png";
+                    }
 
-                <img src="@path" class="xsmallImage" />
-
-                @Html.ActionLink(@str, "UserInfo", "User", new { user = @str }, null)
+                    <div class="col-xs-12 col-sm-3">
+                        <img src="@path" class="xsmallImage" />
+                    </div>
+                    <div class="col-xs-12 col-sm-9 text-center">
+                        @Html.ActionLink(user.Login, "UserInfo", "User", new { user = user.Login }, null)
+                    </div>
+                </div>
+                <div class="col-xs-7 col-sm-9">
+                    @if (User != null && User.Identity.IsAuthenticated)
+                    {
+                        if (user.Flag != null)
+                        {
+                            if (user.Flag == true)
+                            {
+                                @Html.ActionLink("Отписаться", "Unsubscribe", "Subscription", new { subscription = user.Login }, null);
+                            }
+                            else
+                            {
+                                @Html.ActionLink("Подписаться", "Subscribe", "Subscription", new { subscription = user.Login }, null)
+                            }
+                        }
+                    }
+                </div>
             </div>
-        }
-    }
+                            }
+                        }
 }
 

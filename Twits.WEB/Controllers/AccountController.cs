@@ -71,7 +71,16 @@ namespace Twits.WEB.Controllers
 
                 System.Web.Security.FormsAuthentication.SetAuthCookie(model.Login, true);
 
+                using (System.Drawing.Image img
+                    = System.Drawing.Image.FromFile(Server.MapPath("~/Images/Avatars/noav.png")))
+                {
+
+                    string filename = Server.MapPath("~/Images/Avatars/av" + model.Login + ".png");
+
+                    img.Save(filename, System.Drawing.Imaging.ImageFormat.Png);
+                }
                 
+
                 return RedirectToAction("UserInfo", "User", new { user = model.Login });
             }
             else

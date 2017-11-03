@@ -6,6 +6,8 @@
 
 @{ 
     string userName = ViewBag.UserName as string;
+    int x = 0;
+
 }
 
 <script>
@@ -13,12 +15,14 @@
         var name = "@userName";
 
         if (name != null) {
-            $("#showContent").load("/User/UserMessages?user=" + name);
-            }
+            $("#showContent").load("/Message/GetFeed?user=" + name);
+        }
         else {
             $("#showContent").load("/User/UserMessages");
+
         }
     });
+
 </script>
 
 <div class="container">

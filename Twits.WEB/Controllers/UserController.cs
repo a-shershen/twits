@@ -26,8 +26,18 @@ namespace Twits.WEB.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult UserInfo(string user = null)
+        public ActionResult UserInfo(string user = null, bool reloadSubscription = false, bool reloadSubscribers = false)
         {
+            if(reloadSubscription)
+            {
+                ViewBag.ReloadSubscription = true;
+            }
+
+            if(reloadSubscribers)
+            {
+                ViewBag.ReloadSubscribers = true;
+            }
+
             if(user == null)
             {
                 if(User!=null && User.Identity.IsAuthenticated)
